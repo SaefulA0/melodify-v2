@@ -16,30 +16,6 @@ function Song({ order, track }) {
     spotifyAPI.play({
       uris: [track.track.uri],
     });
-
-    // spotifyAPI.play().then(
-    //   function () {
-    //     console.log("Playback started");
-    //   },
-    //   function (err) {
-    //     //if the user making the request is non-premium, a 403 FORBIDDEN response code will be returned
-    //     console.log("Something went wrong!", err);
-    //   }
-    // );
-
-    // if (track.track.id === currentTrackId) {
-    //   if (isPlaying) {
-    //     await spotifyAPI.pause();
-    //     setIsPlaying(false);
-    //   } else {
-    //     await spotifyAPI.play();
-    //     setIsPlaying(true);
-    //   }
-    // } else {
-    //   await spotifyAPI.play({ uris: [track.track.uri] });
-    //   setcurrentStrackId(track.track.id);
-    //   setIsPlaying(true);
-    // }
   };
 
   return (
@@ -50,7 +26,7 @@ function Song({ order, track }) {
       <div className="flex items-center space-x-4">
         <p>{order + 1}</p>
         <img
-          className="w-10 h-10"
+          className="w-10 h-10 rounded-lg"
           src={track.track.album.images[0].url}
           alt="Album Img"
         />

@@ -8,25 +8,25 @@ import { useRecoilState } from "recoil";
 
 function Player() {
   const spotifyAPI = useSpotify();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(50);
-  const [nextSong, setNextSong] = useState();
 
   const songInfo = useSongInfo();
 
   const fetchCurrentSong = () => {
-    if (!songInfo || songInfo == null) {
+    if (songInfo === null) {
       spotifyAPI.getMyCurrentPlayingTrack().then((data) => {
         // console.log("now playing", data.body?.item);
         setCurrentTrackId(data.body?.item?.id);
       });
+    } else {
+      spotifyAPI.getMyCurrentPlaybackState().then((data) => {
+        setIsPlaying(data.body?.is_playing);
+      });
     }
-    spotifyAPI.getMyCurrentPlaybackState().then((data) => {
-      setIsPlaying(data.body?.is_playing);
-    });
   };
 
   const handlePlayPause = () => {
@@ -41,30 +41,24 @@ function Player() {
     });
   };
 
-  const handleNextTrack = () => {
-    spotifyAPI.skipToNext().then((data) => {
-      // console.log("next music", data);
-    });
-  };
-
-  const handleRecomm = () => {
-    spotifyAPI
-      .getRecommendations({
-        min_energy: 0.6,
-        seed_artists: ["6mfK6Q2tzLMEchAr0e9Uzu", "4DYFVNKZ1uixa6SQTvzQwJ"],
-        min_popularity: 50,
-        target_valence: 0.8,
-      })
-      .then(
-        function (data) {
-          let recommendations = data.body.tracks;
-          console.log(recommendations);
-        },
-        function (err) {
-          console.log("Something went wrong!", err);
-        }
-      );
-  };
+  // const handleRecomm = () => {
+  //   spotifyAPI
+  //     .getRecommendations({
+  //       min_energy: 0.6,
+  //       seed_artists: ["6mfK6Q2tzLMEchAr0e9Uzu", "4DYFVNKZ1uixa6SQTvzQwJ"],
+  //       min_popularity: 50,
+  //       target_valence: 0.8,
+  //     })
+  //     .then(
+  //       function (data) {
+  //         let recommendations = data.body.tracks;
+  //         console.log(recommendations);
+  //       },
+  //       function (err) {
+  //         console.log("Something went wrong!", err);
+  //       }
+  //     );
+  // };
 
   useEffect(() => {
     if (spotifyAPI.getAccessToken() && !currentTrackId) {
@@ -88,7 +82,7 @@ function Player() {
   );
 
   return (
-    <div className="h-24 bg-gradient-to-b from-gray-900 to-gray-700 text-gray-300 grid grid-cols-3 text-xs md:text-base px-2 md:px-8">
+    <div className="h-24 px-2 md:px-8 rounded-t-xl bg-gradient-to-b from-gray-900 to-gray-700 text-gray-300 grid grid-cols-3 text-xs md:text-base">
       {/* left section */}
       <div className="flex items-center space-x-4">
         <img
@@ -105,7 +99,7 @@ function Player() {
       {/* center section */}
       <div className="flex items-center justify-evenly">
         {/* mix */}
-        <div>
+        {/* <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -120,9 +114,9 @@ function Player() {
               d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
             />
           </svg>
-        </div>
+        </div> */}
         {/* backward */}
-        <div>
+        {/* <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -137,7 +131,7 @@ function Player() {
               d="M21 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953l7.108-4.062A1.125 1.125 0 0121 8.688v8.123zM11.25 16.811c0 .864-.933 1.405-1.683.977l-7.108-4.062a1.125 1.125 0 010-1.953L9.567 7.71a1.125 1.125 0 011.683.977v8.123z"
             />
           </svg>
-        </div>
+        </div> */}
         {isPlaying ? (
           <div onClick={handlePlayPause}>
             {/* Pause */}
@@ -181,7 +175,7 @@ function Player() {
           </div>
         )}
         {/* skip/next */}
-        <div onClick={handleRecomm}>
+        {/* <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -196,9 +190,9 @@ function Player() {
               d="M3 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062A1.125 1.125 0 013 16.81V8.688zM12.75 8.688c0-.864.933-1.405 1.683-.977l7.108 4.062a1.125 1.125 0 010 1.953l-7.108 4.062a1.125 1.125 0 01-1.683-.977V8.688z"
             />
           </svg>
-        </div>
+        </div> */}
         {/* back */}
-        <div>
+        {/* <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -213,7 +207,7 @@ function Player() {
               d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
             />
           </svg>
-        </div>
+        </div> */}
       </div>
 
       {/* right section */}
