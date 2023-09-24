@@ -1,7 +1,6 @@
 import { useRecoilState } from "recoil";
 import { currentTrackIdState, isPlayingState } from "@/atoms/songAtom";
 import useSpotify from "@/hooks/useSpotify";
-import { millisToMinutesAndSeconds } from "@/lib/time";
 import React from "react";
 import { AiOutlinePlaySquare } from "react-icons/ai";
 
@@ -33,7 +32,10 @@ export default function TopTrack({ items }) {
           </p>
           <p className="w-32 lg:w-64 truncate">{items.artists[0].name}</p>
         </div>
-        <button onClick={playSong}>
+        <button
+          className="hover:text-black cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300"
+          onClick={playSong}
+        >
           <AiOutlinePlaySquare size={32} />
         </button>
       </div>

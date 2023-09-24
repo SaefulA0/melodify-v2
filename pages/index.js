@@ -3,20 +3,20 @@ import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { playlistState } from "@/atoms/playlistAtom";
-import Songs from "@/components/Songs";
+import Songs from "@/components/song/Songs";
 
 import useSpotify from "@/hooks/useSpotify";
-import { artistsState } from "@/atoms/artistAtom";
-import TopTracks from "@/components/TopTracks";
+import TopTracks from "@/components/track/TopTracks";
+import { useRouter } from "next/router";
+import PlaylistsMap from "@/components/playlist/PlaylistsMap";
 
 export default function Home() {
+  const router = useRouter();
   const { data: session } = useSession();
   const [playlist, setPlaylist] = useRecoilState(playlistState);
-  const [artists, setArtists] = useRecoilState(artistsState);
   const [playlistsUser, setPlaylistsUser] = useState([]);
 
   const spotifyAPI = useSpotify();
-  // const getTopTrack = useGetTopTrack();
 
   useEffect(() => {
     spotifyAPI
@@ -29,24 +29,12 @@ export default function Home() {
   }, [spotifyAPI]);
 
   useEffect(() => {
-    spotifyAPI
-      .getMyTopTracks()
-      .then((data) => {
-        setArtists(data);
-        // console.log("Some information about artist", data.body);
-      })
-      .catch((err) => console.log("Something went wrong!", err));
-  }, [spotifyAPI]);
-
-  useEffect(() => {
     if (spotifyAPI.getAccessToken()) {
-      spotifyAPI.getUserPlaylists().then((data) => {
+      spotifyAPI.getUserPlaylists({ limit: 4 }).then((data) => {
         setPlaylistsUser(data.body.items);
       });
     }
   }, [session, spotifyAPI]);
-
-  console.log(playlistsUser);
 
   return (
     <Layout pageTitle="Home">
@@ -98,28 +86,22 @@ export default function Home() {
             </h2>
             <TopTracks />
           </div>
+          {/* card playlist */}
           <div className="mt-12">
-            <h2 className="text-lg text-gray-700 font-bold mb-4">Top Artist</h2>
-            <div className="flex flex-wrap gap-2">
-              {playlistsUser.map((playlist) => (
-                <div key={playlist.id}>
-                  <div className="w-36 h-44">
-                    <img
-                      className="rounded-md object-cover"
-                      src={playlist.images[0].url}
-                      alt="Album Img"
-                    />
-                    <h3 className="text-base font-semibold truncate text-gray-800">
-                      {playlist.name}
-                    </h3>
-                    <p className="text-sm font-normal text-gray-600 text-opacity-50 truncate">
-                      Deskripsi
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <div className="w-full flex justify-between items-center mb-4">
+              <h2 className="text-lg text-gray-700 font-bold">
+                Daftar Putar Kamu
+              </h2>
+              <button
+                onClick={() => router.push("/daftarPutar")}
+                className="text-gray-900 font-medium text-xs opacity-80 hover:opacity-100"
+              >
+                See More
+              </button>
             </div>
-            {/* card playlist */}
+            <div className="flex flex-wrap gap-8">
+              <PlaylistsMap playlist={playlistsUser} />
+            </div>
           </div>
         </div>
       </div>

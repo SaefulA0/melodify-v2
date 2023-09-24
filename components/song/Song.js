@@ -20,7 +20,7 @@ function Song({ order, track }) {
 
   return (
     <div
-      className="grid grid-cols-2 py-4 px-6 rounded-lg hover:bg-gray-200 cursor-pointer"
+      className="grid grid-cols-2 py-4 px-6 rounded-lg cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 hover:bg-gray-200 duration-300"
       onClick={playSong}
     >
       <div className="flex items-center space-x-4">

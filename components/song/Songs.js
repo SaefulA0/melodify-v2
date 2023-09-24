@@ -8,7 +8,7 @@ function Songs() {
 
   return (
     <div className="flex flex-col space-y-1 text-gray-500">
-      {playlist?.tracks.items.slice(0, 5).map((track, i) => (
+      {playlist?.tracks.items.slice(0, 10).map((track, i) => (
         <Song key={track.track.id} track={track} order={i} />
       ))}
     </div>

@@ -7,7 +7,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="hidden md:block absolute top-8 right-8 z-50">
+      <div className="hidden md:block fixed top-8 right-8 z-50">
         {/* Avatar */}
         <button
           className="bg-gray-900 flex items-center py-1.5 px-3 w-fit rounded-full hover:bg-black cursor-pointer shadow-lg"

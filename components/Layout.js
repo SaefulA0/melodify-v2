@@ -2,9 +2,9 @@ import Player from "./Player";
 import React, { useState } from "react";
 import Head from "next/head";
 
-import MenuBarMobile from "./LayoutTest/MenuBarMobile";
-import Sidebar from "./LayoutTest/Sidebar";
-import Header from "./LayoutTest/Header";
+import MenuBarMobile from "./Layout/MenuBarMobile";
+import Sidebar from "./Layout/Sidebar";
+import Header from "./Layout/Header";
 
 export default function Layout({ pageTitle, children }) {
   // Concatenate page title (if exists) to site title
@@ -17,14 +17,17 @@ export default function Layout({ pageTitle, children }) {
   return (
     <>
       <Head>
+        <link rel="shortcut icon" href="/imgs/logo.png" />
         <title>{titleConcat}</title>
       </Head>
       <div className="bg-slate-100 overflow-hidden">
-        {/* <Header /> */}
+        <Header />
         <div className="flex relative">
           <MenuBarMobile setter={setShowSidebar} />
           <Sidebar show={showSidebar} setter={setShowSidebar} />
-          <main className="w-full overflow-y-scroll">{children}</main>
+          <main className="w-full overflow-y-scroll scrollbar-hide">
+            {children}
+          </main>
         </div>
         <div className="w-full fixed bottom-0 z-50">
           <Player />

@@ -1,15 +1,14 @@
 // @/components/Layout/Sidebar.js
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 import { AiOutlineHome, AiOutlineHeart } from "react-icons/ai";
 import { MdOutlineLibraryMusic } from "react-icons/md";
 
 export default function Sidebar({ show, setter }) {
   const router = useRouter();
-  const { data: session } = useSession();
 
   // Define our base class
   const className =
@@ -54,18 +53,18 @@ export default function Sidebar({ show, setter }) {
   return (
     <>
       <div className={`${className}${appendClass}`}>
-        {/* <div className="p-2 flex flex-coll justify-center">
+        <div className="py-10 w-full flex flex-coll justify-center">
           <Link href="/">
             <Image
               src="/imgs/logo.png"
               alt="logo"
-              width={200}
-              height={200}
+              width={128}
+              height={128}
               priority={true}
             />
           </Link>
-        </div> */}
-        <div className="w-full flex flex-col justify-center items-center py-10 px-3">
+        </div>
+        {/* <div className="w-full flex flex-col justify-center items-center py-10 px-3">
           <img
             src={session?.user.image}
             alt="Avatar"
@@ -77,7 +76,7 @@ export default function Sidebar({ show, setter }) {
           <h2 className="w-32 truncate mt-3 text-gray-900 text-center font-bold">
             {session?.user.name}
           </h2>
-        </div>
+        </div> */}
         <div className="flex flex-col justify-center w-full">
           <MenuItem
             name="Beranda"
