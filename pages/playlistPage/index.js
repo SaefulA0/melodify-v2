@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Layout from "@/components/Layout";
+import Layout from "@/components/LayoutComp";
 import useSpotify from "@/hooks/useSpotify";
 import { useSession } from "next-auth/react";
-import PlaylistsMap from "@/components/playlist/PlaylistsMap";
+import PlaylistComp from "@/components/PlaylistComp";
 
 export default function Playlist() {
   const router = useRouter();
@@ -60,7 +60,11 @@ export default function Playlist() {
             <h2 className="text-lg text-gray-700 font-bold mb-4">
               Daftar Putar Kamu
             </h2>
-            <PlaylistsMap playlist={playlistsUser} />
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              {playlistsUser.map((playlist, i) => (
+                <PlaylistComp key={i} playlist={playlist} />
+              ))}
+            </div>
           </div>
         </div>
 

@@ -1,12 +1,12 @@
-import Layout from "@/components/Layout";
+import Layout from "@/components/LayoutComp";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Image from "next/image";
 import useSpotify from "@/hooks/useSpotify";
-import RecommendSongs from "@/components/recommendSong/RecommendSongs";
-import PlaylistsMap from "@/components/playlist/PlaylistsMap";
+import RecommendSong from "@/components/RecommendSongComp";
+import PlaylistComp from "@/components/PlaylistComp";
 
-export default function daftarPutar() {
+export default function recommendationsPage() {
   const router = useRouter();
   const [mood, setMood] = useState("");
   const [banner, setBanner] = useState("");
@@ -166,7 +166,7 @@ export default function daftarPutar() {
           </div>
           <div className="mb-10 text-gray-800">
             {recommendationsMusic ? null : (
-              <div className="p-1 border border-red-800 flex items-center justify-center gap-2">
+              <div className="w-fit p-1 border border-red-800 flex items-center gap-2">
                 <label htmlFor="moodInput">Suasana Hati:</label>
                 <input
                   className="border"
@@ -188,7 +188,11 @@ export default function daftarPutar() {
             </h2>
             {/* Rekomendasi musik*/}
             {recommendationsMusic ? (
-              <RecommendSongs track={recommendationsMusic} />
+              <div className="w-full h-fit flex flex-col space-y-1 text-gray-500 mb-20">
+                {recommendationsMusic?.slice(0, 10).map((track, i) => (
+                  <RecommendSong key={i} track={track} order={i} />
+                ))}
+              </div>
             ) : (
               <>
                 <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-slate-100 shadow-lg rounded-lg">
@@ -208,7 +212,11 @@ export default function daftarPutar() {
             </h2>
             {/* card playlist */}
             {recommendationsMusic ? (
-              <PlaylistsMap playlist={recommendationsPlaylist} />
+              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                {recommendationsPlaylist.map((playlist, i) => (
+                  <PlaylistComp key={i} playlist={playlist} />
+                ))}
+              </div>
             ) : (
               <>
                 <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-slate-100 shadow-lg rounded-lg text-gray-800">

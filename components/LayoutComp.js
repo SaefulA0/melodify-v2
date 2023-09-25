@@ -1,4 +1,4 @@
-import Player from "./Player";
+import Player from "./PlayerComp";
 import React, { useState } from "react";
 import Head from "next/head";
 
@@ -9,7 +9,7 @@ import Header from "./Layout/Header";
 export default function Layout({ pageTitle, children }) {
   // Concatenate page title (if exists) to site title
   let titleConcat = "Melodify";
-  if (pageTitle) titleConcat = pageTitle + " | " + titleConcat;
+  if (pageTitle) titleConcat = titleConcat + " | " + pageTitle;
 
   // Mobile sidebar visibility state
   const [showSidebar, setShowSidebar] = useState(false);

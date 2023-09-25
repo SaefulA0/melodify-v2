@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-function Player() {
+function PlayerComp() {
   const spotifyAPI = useSpotify();
   const { data: session } = useSession();
   const [currentTrackId, setCurrentTrackId] =
@@ -40,25 +40,6 @@ function Player() {
       }
     });
   };
-
-  // const handleRecomm = () => {
-  //   spotifyAPI
-  //     .getRecommendations({
-  //       min_energy: 0.6,
-  //       seed_artists: ["6mfK6Q2tzLMEchAr0e9Uzu", "4DYFVNKZ1uixa6SQTvzQwJ"],
-  //       min_popularity: 50,
-  //       target_valence: 0.8,
-  //     })
-  //     .then(
-  //       function (data) {
-  //         let recommendations = data.body.tracks;
-  //         console.log(recommendations);
-  //       },
-  //       function (err) {
-  //         console.log("Something went wrong!", err);
-  //       }
-  //     );
-  // };
 
   useEffect(() => {
     if (spotifyAPI.getAccessToken() && !currentTrackId) {
@@ -257,4 +238,4 @@ function Player() {
   );
 }
 
-export default Player;
+export default PlayerComp;

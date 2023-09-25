@@ -85,12 +85,12 @@ export default function Sidebar({ show, setter }) {
           />
           <MenuItem
             name="Daftar Putar"
-            route="/daftarPutar"
+            route="/playlistPage"
             icon={<MdOutlineLibraryMusic size={24} />}
           />
           <MenuItem
             name="Rekomendasi"
-            route="/rekomendasi"
+            route="/recommendationsPage"
             icon={<AiOutlineHeart size={24} />}
           />
         </div>

@@ -1,33 +1,36 @@
 import { getSession, useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
+import Layout from "@/components/LayoutComp";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { playlistState } from "@/atoms/playlistAtom";
-import Songs from "@/components/song/Songs";
 
 import useSpotify from "@/hooks/useSpotify";
-import TopTracks from "@/components/track/TopTracks";
 import { useRouter } from "next/router";
-import PlaylistsMap from "@/components/playlist/PlaylistsMap";
+import PlaylistComp from "@/components/PlaylistComp";
+import useGetTopTrack from "@/hooks/useGetTop";
+import TopTrack from "@/components/TopTrackComp";
+import Song from "@/components/SongComp";
 
 export default function Home() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [playlist, setPlaylist] = useRecoilState(playlistState);
+  const [topTrackGlobal, setTopTrackGlobal] = useRecoilState(playlistState);
   const [playlistsUser, setPlaylistsUser] = useState([]);
 
   const spotifyAPI = useSpotify();
 
+  // GET TOP TRACK GLOBAL
   useEffect(() => {
     spotifyAPI
       .getPlaylist("37i9dQZEVXbMDoHDwVN2tF")
       .then((data) => {
-        setPlaylist(data.body);
+        setTopTrackGlobal(data.body);
         // console.log("Some information about this playlist", data.body);
       })
       .catch((err) => console.log("Something went wrong!", err));
   }, [spotifyAPI]);
 
+  // GET PLAYLISTS USER
   useEffect(() => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI.getUserPlaylists({ limit: 4 }).then((data) => {
@@ -35,6 +38,9 @@ export default function Home() {
       });
     }
   }, [session, spotifyAPI]);
+
+  // GET TOP TRACK USER
+  const getTopTrack = useGetTopTrack();
 
   return (
     <Layout pageTitle="Home">
@@ -48,7 +54,7 @@ export default function Home() {
             <div className="flex gap-5 w-full h-32 md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-t from-gray-500 to-gray-900 rounded-md">
               <div className="w-24 md:w-40 flex justify-center items-center">
                 <img
-                  src={playlist?.images?.[0]?.url}
+                  src={topTrackGlobal?.images?.[0]?.url}
                   width={512}
                   height={512}
                   alt="Playlist Cover"
@@ -56,9 +62,9 @@ export default function Home() {
               </div>
               <div className="mr-2 flex flex-col items-start">
                 <h1 className="text-5xl font-semibold text-slate-100 mb-3">
-                  {playlist?.name}
+                  {topTrackGlobal?.name}
                 </h1>
-                <p>{playlist?.description}</p>
+                <p>{topTrackGlobal?.description}</p>
               </div>
             </div>
           </div>
@@ -68,12 +74,21 @@ export default function Home() {
               <h2 className="text-lg text-gray-700 font-bold">
                 Tranding saat ini
               </h2>
-              <button className="text-gray-900 font-medium text-xs opacity-80 hover:opacity-100">
+              <div
+                onClick={() =>
+                  router.push(`/playlistPage/${topTrackGlobal.id}`)
+                }
+                className="text-gray-900 font-medium text-xs opacity-80 hover:opacity-100 cursor-pointer"
+              >
                 See More
-              </button>
+              </div>
             </div>
             <div className="w-full h-fit pb-20">
-              <Songs />
+              <div className="flex flex-col space-y-1 text-gray-500">
+                {topTrackGlobal?.tracks.items.slice(0, 10).map((track, i) => (
+                  <Song key={track.track.id} track={track} order={i} />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -84,7 +99,9 @@ export default function Home() {
             <h2 className="text-lg font-bold mb-4">
               Musik Yang Sering Kamu Dengar
             </h2>
-            <TopTracks />
+            {getTopTrack?.items.slice(0, 5).map((items, i) => (
+              <TopTrack key={items.id} items={items} order={i} />
+            ))}
           </div>
           {/* card playlist */}
           <div className="mt-12">
@@ -93,14 +110,16 @@ export default function Home() {
                 Daftar Putar Kamu
               </h2>
               <button
-                onClick={() => router.push("/daftarPutar")}
-                className="text-gray-900 font-medium text-xs opacity-80 hover:opacity-100"
+                onClick={() => router.push("/playlistPage")}
+                className="text-gray-900 font-medium text-xs opacity-80 hover:opacity-100 cursor-pointer"
               >
                 See More
               </button>
             </div>
-            <div className="flex flex-wrap gap-8">
-              <PlaylistsMap playlist={playlistsUser} />
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              {playlistsUser.map((playlist, i) => (
+                <PlaylistComp key={i} playlist={playlist} />
+              ))}
             </div>
           </div>
         </div>
