@@ -1,54 +1,64 @@
-import Layout from "@/components/LayoutComp";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import Layout from "../../components/Layout/LayoutComp";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import useSpotify from "@/hooks/useSpotify";
-import RecommendSong from "@/components/RecommendSongComp";
-import PlaylistComp from "@/components/PlaylistComp";
+import useSpotify from "../../hooks/useSpotify";
+import RecommendSong from "../../components/RecommendSongComp";
+import PlaylistComp from "../../components/PlaylistComp";
+import { getSession } from "next-auth/react";
+import { useRecoilState } from "recoil";
+import useGetPlaylistsUser from "../../hooks/useGetPlaylistUser";
+import {
+  currentMoodState,
+  selectedGenreState,
+} from "../../atoms/recommendationsAtom";
 
 export default function recommendationsPage() {
-  const router = useRouter();
-  const [mood, setMood] = useState("");
+  const getPlaylistsUser = useGetPlaylistsUser();
   const [banner, setBanner] = useState("");
-  const spotifyAPI = useSpotify();
   const [recommendationsMusic, setRecommendationsMusic] = useState();
   const [recommendationsPlaylist, setRecommendationsPlaylist] = useState();
 
-  const handleMoodChange = (e) => {
-    setMood(e.target.value);
-  };
+  const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
+  const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
 
-  const handleRecommendation = () => {
-    // Lakukan logika untuk merekomendasikan musik berdasarkan suasana hati
-    // Anda dapat menggunakan API musik seperti Spotify atau menggunakan data statis
-    // Contoh sederhana:
+  const spotifyAPI = useSpotify();
+
+  // RECOMMENDATION
+  // const handleMoodChange = (e) => {
+  //   setMood(e.target.value);
+  // };
+
+  useEffect(() => {
     let forBanner = "";
-
-    if (mood === "happy") {
+    // KONDISI SUASANA HATI HAPPY
+    if (currentMood === "happy") {
       forBanner = "Suasana hati kamu saat ini sedang senang";
-      // untuk mendapatkan rekomendasi musik
+      // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
           min_energy: 0.5,
           max_energy: 1.0,
           min_valence: 0.5,
           max_valence: 1.0,
-          seed_genres: ["pop"],
+          seed_genres: [`${selectedGenre}`],
           min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
         })
         .catch((err) => console.log("Something went wrong!", err));
-      // untuk mendapatkan rekomendasi daftar putar musik
+      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
         .searchPlaylists("Playlist for happy mood", { limit: 8 })
         .then((data) => {
           setRecommendationsPlaylist(data.body.playlists.items);
         })
         .catch((err) => console.log("Something went wrong!", err));
-    } else if (mood === "sad") {
+
+      // KONDISI SUASANA HATI SAD
+    } else if (currentMood === "sad") {
       forBanner = "Suasana hati kamu saat ini sedang sedih";
+      // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
           market: "ID",
@@ -56,22 +66,25 @@ export default function recommendationsPage() {
           max_energy: 0.5,
           min_valence: 0.0,
           max_valence: 0.5,
-          seed_genres: ["pop"],
+          seed_genres: [`${selectedGenre}`],
           min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
         })
         .catch((err) => console.log("Something went wrong!", err));
-      // untuk mendapatkan rekomendasi daftar putar musik
+      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
         .searchPlaylists("Playlist for sad mood", { limit: 8 })
         .then((data) => {
           setRecommendationsPlaylist(data.body.playlists.items);
         })
         .catch((err) => console.log("Something went wrong!", err));
-    } else if (mood === "calm") {
+
+      // KONDISI SUASANA HATI CALM
+    } else if (currentMood === "neutral") {
       forBanner = "Suasana hati kamu saat ini sedang tenang";
+      // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
           market: "ID",
@@ -79,22 +92,25 @@ export default function recommendationsPage() {
           max_energy: 0.5,
           min_valence: 0.5,
           max_valence: 1.0,
-          seed_genres: ["pop"],
+          seed_genres: [`${selectedGenre}`],
           min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
         })
         .catch((err) => console.log("Something went wrong!", err));
-      // untuk mendapatkan rekomendasi daftar putar musik
+      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
         .searchPlaylists("Playlist for calm mood", { limit: 8 })
         .then((data) => {
           setRecommendationsPlaylist(data.body.playlists.items);
         })
         .catch((err) => console.log("Something went wrong!", err));
-    } else if (mood === "angry") {
+
+      // KONDISI SUASANA HATI ANGRY
+    } else if (currentMood === "angry") {
       forBanner = "Suasana hati kamu saat ini sedang marah";
+      // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
           market: "ID",
@@ -102,13 +118,14 @@ export default function recommendationsPage() {
           max_energy: 1.0,
           min_valence: 0.0,
           max_valence: 0.5,
-          seed_genres: ["pop"],
+          seed_genres: [`${selectedGenre}`],
           min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
         })
         .catch((err) => console.log("Something went wrong!", err));
+      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
         .searchPlaylists("Playlist for angry mood", { limit: 8 })
         .then((data) => {
@@ -116,8 +133,9 @@ export default function recommendationsPage() {
         })
         .catch((err) => console.log("Something went wrong!", err));
     }
+
     setBanner(forBanner);
-  };
+  }, [currentMood, selectedGenre]);
 
   return (
     <Layout pageTitle="Rekomendasi">
@@ -146,13 +164,13 @@ export default function recommendationsPage() {
                     klik.
                   </p>
                 )}
-                <button
+                <a
                   type="button"
-                  onClick={() => router.push("/mood")}
+                  href="/recommendationsPage/mood"
                   className="mt-3 md:mt-0 flex-shrink-0 text-sm md:text-base text-white bg-indigo-700 border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:bg-indigo-800 hover:-translate-y-1 duration-300 rounded-lg shadow-lg"
                 >
                   Identifikasi
-                </button>
+                </a>
               </div>
               <div className="w-24 md:w-32 h-24 md:h-32 flex justify-center items-center">
                 <Image
@@ -160,13 +178,15 @@ export default function recommendationsPage() {
                   width={512}
                   height={512}
                   alt="face-recognition"
+                  className="rounded-xl"
                 />
               </div>
             </div>
           </div>
           <div className="mb-10 text-gray-800">
-            {recommendationsMusic ? null : (
-              <div className="w-fit p-1 border border-red-800 flex items-center gap-2">
+            {/* XXXXXXXXX */}
+            {/* <div className="w-full justify-between p-1 border border-red-800 flex items-center gap-2">
+              <div>
                 <label htmlFor="moodInput">Suasana Hati:</label>
                 <input
                   className="border"
@@ -175,14 +195,26 @@ export default function recommendationsPage() {
                   value={mood}
                   onChange={handleMoodChange}
                 />
-                <button
-                  className="p-1 bg-indigo-400 rounded-md"
-                  onClick={handleRecommendation}
-                >
-                  Send
-                </button>
               </div>
-            )}
+              <div>
+                <label htmlFor="genreInput">genre:</label>
+                <select className="w-fit text-black" onChange={handleGenre}>
+                  {availableGenre &&
+                    availableGenre.genres.map((genres, i) => (
+                      <option key={i} value={genres}>
+                        {genres}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              <button
+                className="p-1 bg-indigo-400 rounded-md"
+                onClick={handleRecommendation}
+              >
+                Send
+              </button>
+            </div> */}
+            {/* XXXXXXXXX */}
             <h2 className="text-lg text-gray-700 font-bold mb-4">
               Rekomendasi Musik
             </h2>
@@ -190,7 +222,12 @@ export default function recommendationsPage() {
             {recommendationsMusic ? (
               <div className="w-full h-fit flex flex-col space-y-1 text-gray-500 mb-20">
                 {recommendationsMusic?.slice(0, 10).map((track, i) => (
-                  <RecommendSong key={i} track={track} order={i} />
+                  <RecommendSong
+                    key={i}
+                    track={track}
+                    order={i}
+                    playlist={getPlaylistsUser}
+                  />
                 ))}
               </div>
             ) : (
@@ -230,4 +267,22 @@ export default function recommendationsPage() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/landingPage",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 }

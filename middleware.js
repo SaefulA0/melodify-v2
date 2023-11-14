@@ -24,7 +24,7 @@ export async function middleware(req) {
     // like role === "admin" or name === "John Doe", etc.
     if (!session) {
       const url = req.nextUrl.clone();
-      url.pathname = "/login";
+      url.pathname = "/landingPage";
 
       return NextResponse.redirect(url);
     }

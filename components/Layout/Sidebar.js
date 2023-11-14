@@ -6,13 +6,16 @@ import Image from "next/image";
 
 import { AiOutlineHome, AiOutlineHeart } from "react-icons/ai";
 import { MdOutlineLibraryMusic } from "react-icons/md";
+import { signOut, useSession } from "next-auth/react";
+import { BiLogIn } from "react-icons/bi";
 
 export default function Sidebar({ show, setter }) {
   const router = useRouter();
+  const { data: session } = useSession();
 
   // Define our base class
   const className =
-    "bg-gray-100 border-r md:flex md:flex-col md:justify-start md:items-start w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:static top-0 bottom-0 left-0 z-40";
+    " h-screen bg-gray-800 md:flex md:flex-col md:justify-start md:items-start w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:static top-0 bottom-0 left-0 z-40";
   // Append class based on state of sidebar visiblity
   const appendClass = show ? " ml-0" : " ml-[-250px] md:ml-0";
 
@@ -21,8 +24,8 @@ export default function Sidebar({ show, setter }) {
     // Highlight menu item based on currently displayed route
     const colorClass =
       router.pathname === route
-        ? "text-gray-900 font-bold bg-gradient-to-r to-gray-100 from-gray-300 border-l-2 border-gray-800"
-        : "text-gray-500 hover:text-gray-700 transition ease-in-out hover:bg-gray-200 hover:-translate-y-1 duration-300";
+        ? "text-gray-900 font-bold bg-blue-50"
+        : "text-gray-400 hover:text-gray-700 transition ease-in-out hover:bg-blue-50 hover:-translate-y-1 duration-300";
 
     return (
       <Link
@@ -30,7 +33,7 @@ export default function Sidebar({ show, setter }) {
         onClick={() => {
           setter((oldVal) => !oldVal);
         }}
-        className={`w-full py-3 flex items-center rounded-r-lg mb-4 ${colorClass}`}
+        className={`w-full py-3 flex items-center mb-4 rounded-l-none md:rounded-l-md ${colorClass}`}
       >
         <div className="text-lg flex [&>*]:mx-auto w-[50px] mr-2 md:mr-0">
           {icon}
@@ -56,28 +59,17 @@ export default function Sidebar({ show, setter }) {
         <div className="py-10 w-full flex flex-coll justify-center">
           <Link href="/">
             <Image
-              src="/imgs/logo.png"
+              src="/imgs/logoSymbol.png"
               alt="logo"
               width={128}
               height={128}
               priority={true}
+              className="rounded-xl shadow-lg"
             />
           </Link>
         </div>
-        {/* <div className="w-full flex flex-col justify-center items-center py-10 px-3">
-          <img
-            src={session?.user.image}
-            alt="Avatar"
-            width={64}
-            height={64}
-            quality={75}
-            className="rounded-full"
-          />
-          <h2 className="w-32 truncate mt-3 text-gray-900 text-center font-bold">
-            {session?.user.name}
-          </h2>
-        </div> */}
-        <div className="flex flex-col justify-center w-full">
+
+        <div className="flex flex-col justify-center w-full pl-0 md:pl-4">
           <MenuItem
             name="Beranda"
             route="/"
@@ -93,6 +85,24 @@ export default function Sidebar({ show, setter }) {
             route="/recommendationsPage"
             icon={<AiOutlineHeart size={24} />}
           />
+        </div>
+        <div className="absolute md:hidden bottom-0 flex justify-between w-full bg-gray-950">
+          <div className="flex items-center gap-2 p-4">
+            <img
+              src={session?.user.image}
+              alt="Avatar"
+              width={32}
+              height={32}
+              className="rounded-md ring ring-white"
+            />
+            <p className="w-32 text-gray-300 truncate">{session?.user.name}</p>
+          </div>
+          <button
+            onClick={() => signOut()}
+            className="px-2 flex items-center justify-start bg-red-600 hover:bg-red-700"
+          >
+            <BiLogIn size={24} />
+          </button>
         </div>
       </div>
       {show ? <ModalOverlay /> : <></>}

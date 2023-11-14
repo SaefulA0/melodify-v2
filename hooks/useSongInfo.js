@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useSpotify from "./useSpotify";
 import { useRecoilState } from "recoil";
-import { currentTrackIdState } from "@/atoms/songAtom";
+import { currentTrackIdState } from "../atoms/songAtom";
 
 function useSongInfo() {
   const spotifyAPI = useSpotify();

@@ -1,17 +1,29 @@
-import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 export default function PlaylistComp({ playlist }) {
+  const router = useRouter();
+
   return (
-    <Link href={`/playlistPage/${playlist.id}`}>
-      <div className="w-44 h-60 shadow-lg p-2 rounded-md cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 hover:bg-gray-200 duration-300">
-        <img
-          className="rounded-md aspect-square object-cover w-full mb-1"
-          src={playlist.images[0].url}
-          width={128}
-          height={128}
-          alt="Album Img"
-        />
+    <div onClick={() => router.push(`/playlistPage/${playlist.id}`)}>
+      <div className="w-44 h-60 shadow-lg p-2 rounded-md border cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 bg-[#F9F7F7] hover:bg-gray-200 duration-300 hover:z-20">
+        {playlist.images[0] ? (
+          <img
+            className="rounded-md aspect-square object-cover w-full mb-1"
+            src={playlist.images?.[0]?.url}
+            width={128}
+            height={128}
+            alt="Album Image"
+          />
+        ) : (
+          <img
+            className="rounded-md aspect-square object-cover w-full mb-1"
+            src="/imgs/albumCover.png"
+            width={128}
+            height={128}
+            alt="Album Image"
+          />
+        )}
         <h3 className="text-base font-semibold truncate text-gray-800 mb-1">
           {playlist.name}
         </h3>
@@ -19,6 +31,6 @@ export default function PlaylistComp({ playlist }) {
           {playlist.description}
         </p>
       </div>
-    </Link>
+    </div>
   );
 }

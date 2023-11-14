@@ -1,4 +1,4 @@
-import spotifyAPI, { LOGIN_URL } from "@/lib/spotify";
+import spotifyAPI, { LOGIN_URL } from "../../../lib/spotify";
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 
@@ -39,7 +39,7 @@ export const authOptions = {
   ],
   secret: process.env.JWT_SECRET,
   pages: {
-    signIn: "/login",
+    signIn: "/landingPage",
   },
   callbacks: {
     async jwt({ token, account, user }) {

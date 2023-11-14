@@ -1,11 +1,10 @@
-import { currentTrackIdState, isPlayingState } from "@/atoms/songAtom";
-import useSpotify from "@/hooks/useSpotify";
-import { millisToMinutesAndSeconds } from "@/lib/time";
+import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
 import React from "react";
+import { LiaSpotify } from "react-icons/lia";
 import { useRecoilState } from "recoil";
+import ModalAddTrack from "./Modals/ModalAddTrack";
 
-function RecommendSong({ track, order }) {
-  const spotifyAPI = useSpotify();
+export default function RecommendSong({ track, order, playlist }) {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
@@ -13,15 +12,12 @@ function RecommendSong({ track, order }) {
   const playSong = () => {
     setCurrentTrackId(track.id);
     setIsPlaying(true);
-    spotifyAPI.play({
-      uris: [track.uri],
-    });
   };
 
   return (
     <>
       <div
-        className="grid grid-cols-2 py-4 px-6 rounded-lg cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 hover:bg-gray-200 duration-300"
+        className="grid grid-cols-2 py-4 px-6 rounded-lg cursor-pointer delay-100 hover:bg-gray-200 duration-300"
         onClick={playSong}
       >
         <div className="flex items-center space-x-4">
@@ -40,11 +36,18 @@ function RecommendSong({ track, order }) {
         </div>
         <div className="flex items-center justify-between ml-auto md:ml-0">
           <p className="w-64 truncate hidden md:inline">{track.album.name}</p>
-          <p>{millisToMinutesAndSeconds(track.duration_ms)}</p>
+          <div className="flex">
+            <a
+              href={track.external_urls.spotify}
+              target="_blank"
+              className="flex gap-1 text-gray-700 w-full items-center cursor-pointer text-sm rounded-b-md px-2 py-3 hover:bg-gray-400 hover:bg-opacity-20"
+            >
+              <LiaSpotify size={24} />
+            </a>
+            <ModalAddTrack idsong={track.id} playlist={playlist} />
+          </div>
         </div>
       </div>
     </>
   );
 }
-
-export default RecommendSong;

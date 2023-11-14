@@ -1,6 +1,6 @@
-import { currentTrackIdState, isPlayingState } from "@/atoms/songAtom";
-import useSongInfo from "@/hooks/useSongInfo";
-import useSpotify from "@/hooks/useSpotify";
+import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
+import useSongInfo from "../hooks/useSongInfo";
+import useSpotify from "../hooks/useSpotify";
 import { debounce } from "lodash";
 import { useSession } from "next-auth/react";
 import React, { useCallback, useEffect, useState } from "react";
