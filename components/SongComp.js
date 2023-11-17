@@ -22,7 +22,7 @@ function Song({ order, track, playlist }) {
   return (
     <>
       <div
-        className="grid grid-cols-2 py-2 md:py-4 px-2 md:px-6 rounded-lg cursor-pointer delay-100 hover:bg-gray-200 duration-300"
+        className="grid grid-cols-2 py-2 md:py-4 px-2 md:px-6 rounded-lg cursor-pointer delay-100 hover:bg-gray-200 duration-300 border-b"
         onClick={playSong}
       >
         <div className="flex items-center space-x-4">
@@ -40,7 +40,7 @@ function Song({ order, track, playlist }) {
           </div>
         </div>
         <div className="flex items-center justify-between ml-auto md:ml-0">
-          <p className="hidden md:inline">
+          <p className="hidden md:inline truncate">
             {track.track.album.name}
             {/* {millisToMinutesAndSeconds(track.track.duration_ms)} */}
           </p>

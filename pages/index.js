@@ -29,7 +29,7 @@ export default function Home() {
           <h1 className="text-4xl text-gray-800 font-bold mb-4">Beranda</h1>
           <div className="shadow-md rounded-md">
             {/* tranding saat ini */}
-            <div className="flex justify-start items-center gap-5 w-full h-32 md:h-52 p-4 md:p-10 rounded-t-md bg-gradient-to-b from-gray-800 via-gray-950 to-gray-800">
+            <div className="flex justify-start items-center gap-5 w-full h-32 md:h-52 p-4 md:p-10 rounded-t-md bg-gradient-to-b from-zinc-800 via-zinc-950 to-zinc-800">
               <div className="w-32 md:w-40 flex justify-center items-center">
                 <img
                   src={topGlobalTrack?.images?.[0]?.url}
@@ -48,7 +48,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="bg-[#F9F7F7] px-5 py-6 rounded-b-md">
+            <div className="bg-white px-5 py-6 rounded-b-md">
               <div className="w-full flex justify-between items-center mb-4">
                 <h2 className="text-lg text-gray-800 font-bold">
                   Tranding saat ini
@@ -80,7 +80,7 @@ export default function Home() {
         {/* flex kanan */}
         <div className="md:basis-1/2">
           {/* Top Track */}
-          <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-[#F9F7F7] p-4 rounded-md shadow-md">
+          <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-white p-4 rounded-md shadow-md">
             <h2 className="text-lg font-bold">Musik Yang Sering Kamu Dengar</h2>
             {topTracksUser?.items.slice(0, 5).map((items, i) => (
               <TopTrack

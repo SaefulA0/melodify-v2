@@ -17,7 +17,7 @@ export default function RecommendSong({ track, order, playlist }) {
   return (
     <>
       <div
-        className="grid grid-cols-2 py-4 px-6 rounded-lg cursor-pointer delay-100 hover:bg-gray-200 duration-300"
+        className="grid grid-cols-2 py-4 px-6 rounded-lg cursor-pointer delay-100 hover:bg-gray-200 duration-300 border-b"
         onClick={playSong}
       >
         <div className="flex items-center space-x-4">

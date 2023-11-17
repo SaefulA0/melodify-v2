@@ -1,70 +1,134 @@
-import React, { useRef, useState } from "react";
-import { getSession } from "next-auth/react";
-
-import { useRecoilState } from "recoil";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import Layout from "../../components/Layout/LayoutComp";
+import { getSession } from "next-auth/react";
+import { useRecoilState } from "recoil";
 import {
   currentMoodState,
   selectedGenreState,
 } from "../../atoms/recommendationsAtom";
-import useGetAvailableGenre from "../../hooks/useGetAvailableGenre";
-
-import Layout from "../../components/Layout/LayoutComp";
+import * as faceapi from "face-api.js";
 
 export default function mood() {
-  const [playing, setPlaying] = useState(false);
-  const [moodUser, setMoodUser] = useState("happy");
+  const [identifiedMood, setIdentifiedMood] = useState(false);
+  const [mood, setMood] = useState(null);
   const [genre, setGenre] = useState("");
+  const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [captureVideo, setCaptureVideo] = useState(false);
+  const [stage, setStage] = useState("");
+  const router = useRouter();
   const videoRef = useRef();
   const canvasRef = useRef();
-
+  const WIDTH = 940;
+  const HEIGHT = 650;
   const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
 
-  const router = useRouter();
-  const availableGenre = useGetAvailableGenre();
+  const availableGenre = ["pop", "rock", "hip-hop", "edm", "dance"];
 
-  const handleGetRecommendations = () => {
-    setCurrentMood(moodUser);
-    setSelectedGenre(genre);
-    setInterval(() => {
-      router.push("/recommendationsPage");
-    }, 1000);
-  };
+  // OPEN FACE WEBCAM
+  useEffect(() => {
+    const loadModels = async () => {
+      Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
+        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+        faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+        faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+      ]).then(setModelsLoaded(true));
+    };
+    loadModels();
+  }, []);
 
   const startVideo = () => {
-    setPlaying(true);
+    setCaptureVideo(true);
     navigator.mediaDevices
       .getUserMedia({ video: true })
-      .then((currentStream) => {
-        videoRef.current.srcObject = currentStream;
+      .then((stream) => {
+        let video = videoRef.current;
+        video.srcObject = stream;
+        video.play();
       })
       .catch((err) => {
-        console.log(err);
+        console.error("error:", err);
       });
   };
 
-  const stopVideo = () => {
-    setPlaying(false);
-    const video = document.getElementsByClassName("app__videoFeed")[0];
-    video.srcObject.getTracks()[0].stop();
+  const handleVideoOnPlay = () => {
+    setStage("identify");
+    setInterval(async () => {
+      if (canvasRef && canvasRef.current) {
+        const detections = await faceapi
+          .detectSingleFace(
+            videoRef.current,
+            new faceapi.TinyFaceDetectorOptions()
+          )
+          .withFaceLandmarks()
+          .withFaceExpressions();
+
+        if (detections !== null && detections !== undefined) {
+          setIdentifiedMood(true);
+          setMood(detections);
+          setStage("result");
+          // DRAW FACE IN WEBCAM
+          canvasRef.current.innerHtml = faceapi.createCanvasFromMedia(
+            videoRef.current
+          );
+          faceapi.matchDimensions(canvasRef.current, {
+            width: WIDTH,
+            height: HEIGHT,
+          });
+
+          const resized = faceapi.resizeResults(detections, {
+            width: WIDTH,
+            height: HEIGHT,
+          });
+
+          faceapi.draw.drawDetections(canvasRef.current, resized);
+          faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
+          faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
+        }
+      }
+    }, 1000);
+  };
+
+  const closeWebcam = () => {
+    videoRef.current.pause();
+    videoRef.current.srcObject.getTracks()[0].stop();
+    setCaptureVideo(false);
+  };
+
+  const getRecommendations = () => {
+    const Array = Object.entries(mood.expressions);
+    const scoresArray = Array.map((i) => i[1]);
+    const expressionsArray = Array.map((i) => i[0]);
+    const max = Math.max.apply(null, scoresArray);
+    const index = scoresArray.findIndex((score) => score === max);
+    const expression = expressionsArray[index];
+    clearInterval(handleVideoOnPlay);
+    closeWebcam();
+    setCurrentMood(expression);
+    setSelectedGenre(genre);
+    setStage("finish");
+    setTimeout(() => {
+      router.push("/recommendationsPage");
+    }, 3000);
   };
 
   return (
     <>
       <Layout pageTitle="Mood Page">
-        <div className="max-w-full min-h-screen pt-14 px-8 bg-[#F4F5FC] shadow-sm rounded-l-3xl text-gray-800">
-          <h1 className="text-4xl text-gray-900 font-bold mb-10">
-            Identifikasi Suasana Hati
-          </h1>
-          <div className="flex flex-col md:flex-row border shadow-lg rounded-lg">
-            {/* flex kiri */}
-            <div className="relative aspect-video w-1/2">
+        <div className="max-w-full min-h-screen pt-14 px-8 text-gray-800 ">
+          {/* main */}
+          <h3 className="text-4xl text-gray-900 font-bold mb-10">
+            Dapatkan Rekomendasi
+          </h3>
+          <div className="container relative mx-auto flex px-5 py-12 mb-12 md:flex-row flex-col items-center bg-white rounded-md border shadow-md">
+            <div className="relative lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 border">
               <video
                 ref={videoRef}
-                muted
-                autoPlay
-                className="app__videoFeed"
+                height={HEIGHT}
+                width={WIDTH}
+                onPlay={handleVideoOnPlay}
                 crossOrigin="anonymous"
               />
               <canvas
@@ -72,49 +136,53 @@ export default function mood() {
                 className="absolute right-0 left-0 top-0 w-full"
               />
             </div>
-            {/* flex kanan */}
-            <div className="basis-1/2 flex items-center justify-center px-6 pb-4">
-              {/* dropdown genre */}
-              <div className="p-4">
-                <label htmlFor="genreInput">
-                  genre :
+            <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+              <h1 className="title-font text-start sm:text-2xl text-xl mb-4 font-medium text-gray-900">
+                Arahkan wajah mu ke kamera
+              </h1>
+              <p className="mb-8 leading-relaxed">
+                pastikan saat pengambilan gambar tidak menggunakan masker dan
+                mendapatkan pencahaan yang cukup
+              </p>
+              <div className="">
+                <label className="flex flex-col" htmlFor="genreInput">
+                  Genre musik yang disukai :
                   <select
                     value={genre}
                     onChange={(e) => {
                       setGenre(e.target.value);
                     }}
-                    className="ml-2 border"
+                    className="border"
                   >
-                    <option defaultValue>Please choose one option</option>
-                    {availableGenre?.genres?.map((genres, index) => {
+                    <option defaultValue>Pilih salah satu genre</option>
+                    {availableGenre.map((genres, index) => {
                       return <option key={index}>{genres}</option>;
                     })}
                   </select>
                 </label>
               </div>
-              {/* button start video */}
-              {playing ? (
+            </div>
+            <div className="absolute bottom-5 right-5 flex gap-2">
+              {captureVideo ? null : (
                 <button
-                  className="text-black p-2 bg-slate-300 rounded-md hover:bg-slate-400"
-                  onClick={stopVideo}
-                >
-                  Stop Camera
-                </button>
-              ) : (
-                <button
-                  className="text-black p-2 bg-slate-300 rounded-md hover:bg-slate-400"
                   onClick={startVideo}
+                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2.5 px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                 >
-                  Start Camera
+                  Ambil gambar
+                </button>
+              )}
+              {identifiedMood && genre && (
+                <button
+                  type="button"
+                  onClick={getRecommendations}
+                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2.5 px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                >
+                  Selanjutnya
                 </button>
               )}
             </div>
           </div>
-          <p>MOOD : {currentMood}</p>
-          <p>GENRE : {selectedGenre}</p>
-          <button onClick={handleGetRecommendations}>CLICK</button>
         </div>
-        <div></div>
       </Layout>
     </>
   );

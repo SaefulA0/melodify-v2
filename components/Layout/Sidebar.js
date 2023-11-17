@@ -15,7 +15,7 @@ export default function Sidebar({ show, setter }) {
 
   // Define our base class
   const className =
-    " h-screen bg-gray-800 md:flex md:flex-col md:justify-start md:items-start w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:static top-0 bottom-0 left-0 z-40";
+    "h-screen bg-[#252525] md:flex md:flex-col md:justify-start md:items-start w-[250px] transition-[margin-left] ease-in-out duration-500 fixed md:static top-0 bottom-0 left-0 z-40";
   // Append class based on state of sidebar visiblity
   const appendClass = show ? " ml-0" : " ml-[-250px] md:ml-0";
 
@@ -24,8 +24,8 @@ export default function Sidebar({ show, setter }) {
     // Highlight menu item based on currently displayed route
     const colorClass =
       router.pathname === route
-        ? "text-gray-900 font-bold bg-blue-50"
-        : "text-gray-400 hover:text-gray-700 transition ease-in-out hover:bg-blue-50 hover:-translate-y-1 duration-300";
+        ? "text-gray-900 font-bold bg-[#F6F6F6]"
+        : "text-gray-400 hover:text-gray-700 transition ease-in-out hover:bg-[#F6F6F6] hover:-translate-y-1 duration-300";
 
     return (
       <Link

@@ -1,15 +1,8 @@
-import React, { useEffect } from "react";
-import Router from "next/router";
-import { getProviders, signIn, useSession } from "next-auth/react";
+import React from "react";
+import { getProviders, getSession, signIn } from "next-auth/react";
 import Head from "next/head";
 
 export default function landingPage({ providers }) {
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated") Router.replace("/");
-  }, [status]);
-
   return (
     <>
       <Head>
@@ -19,7 +12,7 @@ export default function landingPage({ providers }) {
       <main className="bg-cover bg-no-repeat bg-left bg-landingPageBG">
         <div className="relative min-w-full min-h-screen flex flex-col justify-center items-center bg-gray-100 bg-opacity-80">
           <section className="text-gray-600 body-font">
-            <div className="container mx-auto flex md:flex-row flex-col items-center">
+            <div className="container mx-auto flex md:flex-row flex-col items-center scrollbar-hide">
               <div className="relative h-screen lg:flex-grow md:w-1/2 px-6 lg:px-24 md:px-16 flex flex-col justify-center items-center md:items-start text-center md:text-left mb-16 md:mb-0 ">
                 <header className="absolute w-full top-0 left-0 right-0 text-gray-600 body-font p-4">
                   <div className="container mx-auto flex flex-wrap p-2 flex-row items-center justify-between">
@@ -51,12 +44,12 @@ export default function landingPage({ providers }) {
                   {Object.values(providers).map((provider) => (
                     <div key={provider.name}>
                       <button
-                        className="inline-flex text-white bg-gray-800 cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 border-0 py-3 px-11 focus:outline-none rounded-full text-lg shadow-lg"
+                        className="inline-flex text-white bg-gradient-to-tl from-gray-700 via-[#252525] to-gray-800 cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 border-0 py-2.5 px-11 focus:outline-none rounded-md text-lg shadow-md"
                         onClick={() =>
                           signIn(provider.id, { callbackUrl: "/" })
                         }
                       >
-                        Start Explore
+                        Masuk
                       </button>
                     </div>
                   ))}
@@ -77,8 +70,17 @@ export default function landingPage({ providers }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const providers = await getProviders();
+  const session = await getSession(context);
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {

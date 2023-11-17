@@ -11,16 +11,18 @@ import {
   currentMoodState,
   selectedGenreState,
 } from "../../atoms/recommendationsAtom";
+import { useRouter } from "next/router";
 
 export default function recommendationsPage() {
   const getPlaylistsUser = useGetPlaylistsUser();
   const [banner, setBanner] = useState("");
   const [recommendationsMusic, setRecommendationsMusic] = useState();
   const [recommendationsPlaylist, setRecommendationsPlaylist] = useState();
-
-  const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
-  const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
-
+  // const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
+  // const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
+  const currentMood = "sad";
+  const selectedGenre = "pop";
+  const router = useRouter();
   const spotifyAPI = useSpotify();
 
   // RECOMMENDATION
@@ -32,7 +34,7 @@ export default function recommendationsPage() {
     let forBanner = "";
     // KONDISI SUASANA HATI HAPPY
     if (currentMood === "happy") {
-      forBanner = "Suasana hati kamu saat ini sedang senang";
+      forBanner = "Mood kamu saat ini sedang senang";
       // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
@@ -57,7 +59,7 @@ export default function recommendationsPage() {
 
       // KONDISI SUASANA HATI SAD
     } else if (currentMood === "sad") {
-      forBanner = "Suasana hati kamu saat ini sedang sedih";
+      forBanner = "Mood kamu saat ini sedang sedih";
       // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
@@ -83,7 +85,7 @@ export default function recommendationsPage() {
 
       // KONDISI SUASANA HATI CALM
     } else if (currentMood === "neutral") {
-      forBanner = "Suasana hati kamu saat ini sedang tenang";
+      forBanner = "Mood kamu saat ini sedang rileks";
       // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
@@ -109,7 +111,7 @@ export default function recommendationsPage() {
 
       // KONDISI SUASANA HATI ANGRY
     } else if (currentMood === "angry") {
-      forBanner = "Suasana hati kamu saat ini sedang marah";
+      forBanner = "Mood kamu saat ini sedang marah";
       // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
@@ -135,11 +137,11 @@ export default function recommendationsPage() {
     }
 
     setBanner(forBanner);
-  }, [currentMood, selectedGenre]);
+  }, []);
 
   return (
     <Layout pageTitle="Rekomendasi">
-      <div className="min-h-screen max-w-full p-8 pt-20 md:pt-11 md:flex bg-[#F4F5FC] border shadow-sm rounded-l-3xl">
+      <div className="min-h-screen max-w-full p-8 pt-20 md:pt-11 md:flex shadow-sm rounded-l-3xl">
         {/* flex kiri */}
         <div className="md:basis-full md:mr-10">
           {/* home */}
@@ -147,80 +149,76 @@ export default function recommendationsPage() {
             <h1 className="text-4xl text-gray-800 font-bold mb-4">
               Rekomendasi
             </h1>
-            <div className="flex md:justify-between w-full h-32 md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md shadow-lg">
-              <div className="w-10/12 mr-2 flex flex-col justify-between items-start">
+            <div className="flex md:justify-between w-full h-fit md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-r from-zinc-800 via-zinc-900 to-zinc-700 rounded-md shadow-lg">
+              <div className="w-full md:w-10/12 mr-2 flex flex-col justify-between items-start">
                 {/* Perlihatkan ekspresi wajahmu. Ungkapkan moodmu dengan satu klik. */}
                 {banner ? (
                   <>
-                    <p className="text-sm md:text-lg font-normal text-gray-800-100">
-                      {banner} <br />
-                      berikut rekomendasi musik dan playlist yang sesuai dengan
-                      suasana hati kamu
-                    </p>
+                    <div className="mb-3">
+                      <h3 className="text-lg md:text-3xl font-semibold text-slate-100 mb-1">
+                        {banner}
+                      </h3>
+                      <p className="text-sm md:text-base text-gray-400">
+                        berikut rekomendasi musik dan playlist yang sesuai
+                        dengan suasana hati kamu
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => router.push("/recommendationsPage/mood")}
+                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                    >
+                      Ulangi
+                    </button>
                   </>
                 ) : (
-                  <p className="text-sm md:text-lg font-normal text-slate-100">
-                    Perlihatkan ekspresi wajahmu. Ungkapkan moodmu dengan satu
-                    klik.
-                  </p>
+                  <>
+                    <h3 className="text-base md:text-xl font-semibold text-slate-200 mb-1">
+                      Dapatkan rekomendasi musik dan daftar putar yang sesuai
+                      dengan mood kamu!
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => router.push("/recommendationsPage/mood")}
+                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                    >
+                      Identifikasi
+                    </button>
+                  </>
                 )}
-                <a
-                  type="button"
-                  href="/recommendationsPage/mood"
-                  className="mt-3 md:mt-0 flex-shrink-0 text-sm md:text-base text-white bg-indigo-700 border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:bg-indigo-800 hover:-translate-y-1 duration-300 rounded-lg shadow-lg"
-                >
-                  Identifikasi
-                </a>
               </div>
-              <div className="w-24 md:w-32 h-24 md:h-32 flex justify-center items-center">
-                <Image
-                  src="/imgs/face-recognition.png"
-                  width={512}
-                  height={512}
-                  alt="face-recognition"
-                  className="rounded-xl"
-                />
+              <div className="w-32 h-32 md:w-32 md:h-32 flex justify-center items-center">
+                {banner ? (
+                  <>
+                    <Image
+                      src={`/imgs/expressionStiker/${currentMood}.png`}
+                      width={512}
+                      height={512}
+                      alt="face-recognition"
+                      className="rounded-xl"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      src="/imgs/face-recognition.png"
+                      width={512}
+                      height={512}
+                      alt="face-recognition"
+                      className="rounded-xl"
+                    />
+                  </>
+                )}
               </div>
             </div>
           </div>
-          <div className="mb-10 text-gray-800">
-            {/* XXXXXXXXX */}
-            {/* <div className="w-full justify-between p-1 border border-red-800 flex items-center gap-2">
-              <div>
-                <label htmlFor="moodInput">Suasana Hati:</label>
-                <input
-                  className="border"
-                  type="text"
-                  id="moodInput"
-                  value={mood}
-                  onChange={handleMoodChange}
-                />
-              </div>
-              <div>
-                <label htmlFor="genreInput">genre:</label>
-                <select className="w-fit text-black" onChange={handleGenre}>
-                  {availableGenre &&
-                    availableGenre.genres.map((genres, i) => (
-                      <option key={i} value={genres}>
-                        {genres}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              <button
-                className="p-1 bg-indigo-400 rounded-md"
-                onClick={handleRecommendation}
-              >
-                Send
-              </button>
-            </div> */}
-            {/* XXXXXXXXX */}
+          <div className="bg-white px-5 py-6 border shadow-md rounded-md">
             <h2 className="text-lg text-gray-700 font-bold mb-4">
               Rekomendasi Musik
             </h2>
             {/* Rekomendasi musik*/}
             {recommendationsMusic ? (
-              <div className="w-full h-fit flex flex-col space-y-1 text-gray-500 mb-20">
+              <div className="w-full h-fit flex flex-col space-y-1 text-gray-500">
                 {recommendationsMusic?.slice(0, 10).map((track, i) => (
                   <RecommendSong
                     key={i}
@@ -232,7 +230,7 @@ export default function recommendationsPage() {
               </div>
             ) : (
               <>
-                <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-slate-100 shadow-lg rounded-lg">
+                <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
                   Identifikasi moodmu terlebih dahulu seblum mendapatkan
                   rekomendasi musik
                 </div>
@@ -256,7 +254,7 @@ export default function recommendationsPage() {
               </div>
             ) : (
               <>
-                <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-slate-100 shadow-lg rounded-lg text-gray-800">
+                <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg text-gray-800">
                   Identifikasi moodmu terlebih dahulu sebelum mendapatkan
                   rekomendasi playlist
                 </div>

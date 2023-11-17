@@ -13,7 +13,7 @@ export default function Playlist() {
 
   return (
     <Layout pageTitle="Daftar Putar">
-      <div className="min-h-screen max-w-full px-2 md:px-8 pt-16 md:pt-12 pb-8 md:flex bg-[#F4F5FC] border shadow-sm">
+      <div className="min-h-screen max-w-full px-2 md:px-8 pt-16 md:pt-12 pb-8 md:flex shadow-sm">
         {/* flex kiri */}
         <div className="md:basis-full md:mr-10">
           {/* home */}
@@ -22,9 +22,9 @@ export default function Playlist() {
               Daftar Putar
             </h1>
             {/* <MusicRecommendation /> */}
-            <div className="flex md:justify-between w-full h-32 md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-r from-blue-950 via-slate-500 to-gray-500 rounded-md">
+            <div className="flex md:justify-between w-full h-32 md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-tl from-zinc-700 via-zinc-900 to-zinc-800 rounded-md">
               <div className="mr-2 flex flex-col justify-between items-start">
-                <p className="text-sm md:text-base text-gray-200">
+                <p className="text-base md:text-xl font-semibold text-slate-200 mb-1">
                   Buatlah suasana yang tak terlupakan dengan daftar putar musik
                   pribadimu.
                 </p>

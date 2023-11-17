@@ -115,10 +115,10 @@ export default function ModalAddTrack({ idsong, playlist }) {
                         className={({ active, chacked }) =>
                           `${
                             active
-                              ? "ring-2 ring-white/60 ring-offset-2 ring-offset-sky-300 bg-sky-200"
+                              ? "ring-2 ring-white/60 ring-offset-2 ring-offset-gray-300 bg-gray-200"
                               : ""
                           } 
-                        relative flex cursor-pointer rounded-lg focus:outline-none hover:bg-sky-300 delay-100 bg-transparent duration-300 mb-1
+                        relative flex cursor-pointer rounded-lg focus:outline-none hover:bg-gray-300 delay-100 bg-transparent duration-300 mb-1
                         `
                         }
                       >
@@ -167,7 +167,7 @@ export default function ModalAddTrack({ idsong, playlist }) {
                   <div className="w-full flex justify-end gap-4 mt-4">
                     <button
                       type="button"
-                      className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-300 bg-gray-300 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="w-28 inline-flex justify-center rounded-md shadow-md border-2 border-gray-800 border-opacity-50 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 focus:outline-none"
                       onClick={closeModal}
                     >
                       Tutup
@@ -175,7 +175,7 @@ export default function ModalAddTrack({ idsong, playlist }) {
                     {selectedPlaylist ? (
                       <button
                         onClick={HandleAddTrack}
-                        className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-900 bg-gray-800 hover:bg-gray-800 px-4 py-2 text-sm font-medium text-slate-100  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-900 bg-gradient-to-tl from-gray-700 via-[#252525] to-gray-800 px-4 py-2 text-sm font-medium text-slate-100 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 focus:outline-none"
                       >
                         Simpan
                       </button>

@@ -6,7 +6,7 @@ import Head from "next/head";
 import MenuBarMobile from "./MenuBarMobile";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import Footer from "../Footer";
+import Footer from "./Footer";
 
 export default function LayoutComp({ pageTitle, children }) {
   // Concatenate page title (if exists) to site title
@@ -22,7 +22,7 @@ export default function LayoutComp({ pageTitle, children }) {
         <link rel="shortcut icon" href="/imgs/logoSymbol.png" />
         <title>{titleConcat}</title>
       </Head>
-      <div className="bg-blue-50 overflow-hidden">
+      <div className="bg-[#F6F6F6] overflow-hidden">
         <Header />
         <div className="flex relative">
           <MenuBarMobile setter={setShowSidebar} />

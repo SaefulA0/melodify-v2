@@ -73,7 +73,7 @@ export default function ModalCreatePlaylist() {
     <>
       <button
         onClick={openModal}
-        className="flex-shrink-0 text-white bg-indigo-800 border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:bg-indigo-800 hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+        className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
       >
         Buat Daftar Putar
       </button>
@@ -170,14 +170,14 @@ export default function ModalCreatePlaylist() {
                   <div className="w-full flex justify-end gap-4 mt-4">
                     <button
                       type="button"
-                      className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-300 bg-gray-300 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="w-28 inline-flex justify-center rounded-md shadow-md border-2 border-gray-800 border-opacity-50 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 focus:outline-none"
                       onClick={closeModal}
                     >
                       Tutup
                     </button>
                     <button
                       onClick={HandleCreatePlaylist}
-                      className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-900 bg-gray-800 hover:bg-gray-800 px-4 py-2 text-sm font-medium text-slate-100  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-900 bg-gradient-to-tl from-gray-700 via-[#252525] to-gray-800 px-4 py-2 text-sm font-medium text-slate-100 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 focus:outline-none"
                     >
                       Buat
                     </button>

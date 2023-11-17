@@ -9,7 +9,7 @@ export default function Header() {
       <div className="hidden md:block fixed top-8 right-8 z-50">
         {/* Avatar */}
         <button
-          className="bg-gray-900 flex items-center py-1.5 px-3 w-fit rounded-full hover:bg-black cursor-pointer shadow-lg"
+          className="bg-gradient-to-l from-zinc-700 via-zinc-900 to-zinc-900 flex items-center py-1.5 px-3 w-fit rounded-full cursor-pointer shadow-lg"
           onClick={() => signOut()}
         >
           <img
@@ -29,7 +29,7 @@ export default function Header() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6 stroke-gray-300"
+            className="w-6 h-6 stroke-red-500"
           >
             <path
               strokeLinecap="round"

@@ -19,7 +19,7 @@ function useGetAvailableGenre() {
     };
 
     fecthGetAvailableGenre();
-  }, [spotifyAPI]);
+  }, []);
 
   return availableGenre;
 }
