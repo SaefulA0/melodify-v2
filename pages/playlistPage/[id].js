@@ -5,6 +5,7 @@ import Song from "../../components/SongComp";
 import { getSession, useSession } from "next-auth/react";
 import useGetPlaylistsUser from "../../hooks/useGetPlaylistUser";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { SlSocialSpotify } from "react-icons/sl";
 import { toast } from "react-toastify";
 
 export default function selectedPlaylist({ playlistId }) {
@@ -102,16 +103,26 @@ export default function selectedPlaylist({ playlistId }) {
                   {playlist?.description}
                 </p>
               </div>
-              <button
-                onClick={HandleSavePlaylist}
-                className="absolute right-5 bottom-5 flex items-center text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
-              >
-                <MdOutlinePlaylistAdd size={20} />
-                Simpan
-              </button>
+              <div className="flex items-center gap-3 absolute right-5 bottom-5 text-white">
+                {/* <a
+                  href={playlist?.external_urls?.spotify}
+                  target="_blank"
+                  className="flex gap-1 items-center bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                >
+                  <SlSocialSpotify size={20} />
+                  Buka
+                </a> */}
+                <button
+                  onClick={HandleSavePlaylist}
+                  className="flex items-center bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                >
+                  <MdOutlinePlaylistAdd size={20} />
+                  Simpan
+                </button>
+              </div>
             </div>
           </div>
-          {/* tranding saat ini */}
+          {/* main content*/}
           <div className="px-5 py-6 rounded-b-md bg-white shadow-md border">
             {/* card playlist */}
             <h2 className="text-lg text-gray-800 font-bold mb-4">Musik</h2>

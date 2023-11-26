@@ -18,10 +18,10 @@ export default function recommendationsPage() {
   const [banner, setBanner] = useState("");
   const [recommendationsMusic, setRecommendationsMusic] = useState();
   const [recommendationsPlaylist, setRecommendationsPlaylist] = useState();
-  // const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
-  // const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
-  const currentMood = "sad";
-  const selectedGenre = "pop";
+  const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
+  const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
+  // const currentMood = "happy";
+  // const selectedGenre = "pop";
   const router = useRouter();
   const spotifyAPI = useSpotify();
 
@@ -43,7 +43,6 @@ export default function recommendationsPage() {
           min_valence: 0.5,
           max_valence: 1.0,
           seed_genres: [`${selectedGenre}`],
-          min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
@@ -51,7 +50,10 @@ export default function recommendationsPage() {
         .catch((err) => console.log("Something went wrong!", err));
       // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
-        .searchPlaylists("Playlist for happy mood", { limit: 8 })
+        .searchPlaylists(
+          `Playlist for a happy mood with the ${selectedGenre} genre`,
+          { limit: 8 }
+        )
         .then((data) => {
           setRecommendationsPlaylist(data.body.playlists.items);
         })
@@ -69,7 +71,6 @@ export default function recommendationsPage() {
           min_valence: 0.0,
           max_valence: 0.5,
           seed_genres: [`${selectedGenre}`],
-          min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
@@ -77,7 +78,12 @@ export default function recommendationsPage() {
         .catch((err) => console.log("Something went wrong!", err));
       // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
-        .searchPlaylists("Playlist for sad mood", { limit: 8 })
+        .searchPlaylists(
+          `Playlist for a sad mood with the ${selectedGenre} genre`,
+          {
+            limit: 8,
+          }
+        )
         .then((data) => {
           setRecommendationsPlaylist(data.body.playlists.items);
         })
@@ -95,7 +101,6 @@ export default function recommendationsPage() {
           min_valence: 0.5,
           max_valence: 1.0,
           seed_genres: [`${selectedGenre}`],
-          min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
@@ -103,7 +108,12 @@ export default function recommendationsPage() {
         .catch((err) => console.log("Something went wrong!", err));
       // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
-        .searchPlaylists("Playlist for calm mood", { limit: 8 })
+        .searchPlaylists(
+          `Playlist for a calm mood with the ${selectedGenre} genre`,
+          {
+            limit: 8,
+          }
+        )
         .then((data) => {
           setRecommendationsPlaylist(data.body.playlists.items);
         })
@@ -121,7 +131,6 @@ export default function recommendationsPage() {
           min_valence: 0.0,
           max_valence: 0.5,
           seed_genres: [`${selectedGenre}`],
-          min_popularity: 50,
         })
         .then((data) => {
           setRecommendationsMusic(data.body.tracks);
@@ -129,7 +138,10 @@ export default function recommendationsPage() {
         .catch((err) => console.log("Something went wrong!", err));
       // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
       spotifyAPI
-        .searchPlaylists("Playlist for angry mood", { limit: 8 })
+        .searchPlaylists(
+          `Playlist for a angry mood with the ${selectedGenre} genre`,
+          { limit: 8 }
+        )
         .then((data) => {
           setRecommendationsPlaylist(data.body.playlists.items);
         })
@@ -137,7 +149,7 @@ export default function recommendationsPage() {
     }
 
     setBanner(forBanner);
-  }, []);
+  }, [selectedGenre, currentMood]);
 
   return (
     <Layout pageTitle="Rekomendasi">
@@ -219,7 +231,7 @@ export default function recommendationsPage() {
             {/* Rekomendasi musik*/}
             {recommendationsMusic ? (
               <div className="w-full h-fit flex flex-col space-y-1 text-gray-500">
-                {recommendationsMusic?.slice(0, 10).map((track, i) => (
+                {recommendationsMusic?.map((track, i) => (
                   <RecommendSong
                     key={i}
                     track={track}
@@ -230,7 +242,7 @@ export default function recommendationsPage() {
               </div>
             ) : (
               <>
-                <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
+                <div className="p-5 text-gray-800 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
                   Identifikasi moodmu terlebih dahulu seblum mendapatkan
                   rekomendasi musik
                 </div>
