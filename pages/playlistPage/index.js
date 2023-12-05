@@ -3,13 +3,17 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Layout from "../../components/Layout/LayoutComp";
 import PlaylistComp from "../../components/PlaylistComp";
-import useGetPlaylistsUser from "../../hooks/useGetPlaylistUser";
+import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import { getSession } from "next-auth/react";
 import ModalCreatePlaylist from "../../components/Modals/ModalCreatePlaylist";
+import useSpotify from "../../hooks/useSpotify";
 
-export default function Playlist() {
+export default function playlistsPage() {
+  // GET ACCESSTOKEN
+  const spotifyAPI = useSpotify();
+
   // GET PLAYLISTS USER
-  const playlistsUser = useGetPlaylistsUser();
+  const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   return (
     <Layout pageTitle="Daftar Putar">
@@ -28,7 +32,7 @@ export default function Playlist() {
                   Buatlah suasana yang tak terlupakan dengan daftar putar musik
                   pribadimu.
                 </p>
-                <ModalCreatePlaylist />
+                <ModalCreatePlaylist spotifyAPI={spotifyAPI} />
               </div>
               <div className="w-32 md:w-40 flex justify-center items-center">
                 <Image
@@ -48,7 +52,7 @@ export default function Playlist() {
               Daftar Putar Kamu
             </h2>
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              {playlistsUser.map((playlist, i) => (
+              {userPlaylists.map((playlist, i) => (
                 <PlaylistComp key={i} playlist={playlist} />
               ))}
             </div>

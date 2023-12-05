@@ -4,7 +4,7 @@ import React from "react";
 import ModalAddTrack from "./Modals/ModalAddTrack";
 import { LiaSpotify } from "react-icons/lia";
 
-export default function TopTrack({ items, playlist }) {
+export default function TopTrack({ items, playlist, spotifyAPI }) {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
@@ -41,7 +41,11 @@ export default function TopTrack({ items, playlist }) {
             >
               <LiaSpotify size={24} />
             </a>
-            <ModalAddTrack idsong={items.id} playlist={playlist} />
+            <ModalAddTrack
+              idsong={items.id}
+              playlist={playlist}
+              spotifyAPI={spotifyAPI}
+            />
           </div>
         </div>
       </div>

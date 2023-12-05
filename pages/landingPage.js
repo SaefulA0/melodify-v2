@@ -37,8 +37,8 @@ export default function landingPage({ providers }) {
                   apa yang tidak bisa diucapkan.
                 </h1>
                 <p className="mb-8 leading-relaxed text-base">
-                  Dengarkan Musik Favorit mu dan Temukan Musik Yang Sesuai
-                  Dengan Moodmu Disini!
+                  Dengarkan musik favoritmu dan temukan musik yang sesuai dengan
+                  moodmu disini!
                 </p>
                 <div className="flex justify-center">
                   {Object.values(providers).map((provider) => (

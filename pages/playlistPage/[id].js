@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import useSpotify from "../../hooks/useSpotify";
 import Layout from "../../components/Layout/LayoutComp";
 import Song from "../../components/SongComp";
-import { getSession, useSession } from "next-auth/react";
-import useGetPlaylistsUser from "../../hooks/useGetPlaylistUser";
+import { getSession } from "next-auth/react";
+import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
-import { SlSocialSpotify } from "react-icons/sl";
 import { toast } from "react-toastify";
 
-export default function selectedPlaylist({ playlistId }) {
+export default function selectedPlaylistPage({ playlistId, session }) {
   const selectedPlaylistId = playlistId;
   const [playlist, setPlaylist] = useState(null);
-  const { data: session } = useSession();
 
+  // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
+
+  // GET PLAYLISTS USER
+  const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   useEffect(() => {
     if (spotifyAPI.getAccessToken()) {
@@ -63,9 +65,6 @@ export default function selectedPlaylist({ playlistId }) {
     }
   };
 
-  // GET PLAYLISTS USER
-  const playlistsUser = useGetPlaylistsUser();
-
   return (
     <Layout pageTitle={playlist?.name}>
       <div className="max-w-full min-h-screen px-2 md:px-8 pt-16 md:pt-12 pb-8 md:flex shadow-sm">
@@ -73,7 +72,9 @@ export default function selectedPlaylist({ playlistId }) {
         <div className="md:basis-full md:mr-10">
           {/* Main content */}
           <div className="">
-            <h1 className="text-4xl text-gray-800 font-bold mb-4">Playlist</h1>
+            <h1 className="text-4xl text-gray-800 font-bold mb-4">
+              Daftar Putar
+            </h1>
             <div className="relative flex gap-5 w-full min-h-32 md:h-52 p-4 md:p-10 bg-gradient-to-b from-zinc-800 via-zinc-950 to-zinc-800 rounded-t-md">
               {/* <MusicRecommendation /> */}
               <div className="w-24 md:w-40 flex justify-center items-center">
@@ -132,7 +133,7 @@ export default function selectedPlaylist({ playlistId }) {
                   key={i}
                   track={track}
                   order={i}
-                  playlist={playlistsUser}
+                  playlist={userPlaylists}
                 />
               ))}
             </div>

@@ -1,24 +1,28 @@
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import LayoutComp from "../components/Layout/LayoutComp";
 import { useRouter } from "next/router";
 import PlaylistComp from "../components/PlaylistComp";
-import useGetTopTracks from "../hooks/useGetTopUserTracks";
 import TopTrack from "../components/TopTrackComp";
 import Song from "../components/SongComp";
-import useGetPlaylistsUser from "../hooks/useGetPlaylistUser";
+import useGetUserTopTracks from "../hooks/useGetUserTopTracks";
+import useGetUserPlaylists from "../hooks/useGetUserPlaylists";
 import useGetTopGlobal from "../hooks/useGetTopGlobal";
+import useSpotify from "../hooks/useSpotify";
 
-export default function Home() {
+export default function HomePage() {
   const router = useRouter();
 
+  // GET ACCESSTOKEN
+  const spotifyAPI = useSpotify();
+
   // GET TOP GLOBAL TRACK
-  const topGlobalTrack = useGetTopGlobal();
+  const topGlobalTrack = useGetTopGlobal({ spotifyAPI });
 
   // GET TOP TRACK USER
-  const topTracksUser = useGetTopTracks();
+  const userTopTracks = useGetUserTopTracks({ spotifyAPI });
 
   // GET PLAYLISTS USER
-  const playlistsUser = useGetPlaylistsUser();
+  const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   return (
     <LayoutComp pageTitle="Home">
@@ -51,7 +55,7 @@ export default function Home() {
             <div className="bg-white px-5 py-6 rounded-b-md">
               <div className="w-full flex justify-between items-center mb-4">
                 <h2 className="text-lg text-gray-800 font-bold">
-                  Tranding saat ini
+                  Tranding Musik Saat Ini
                 </h2>
                 <div
                   onClick={() =>
@@ -59,17 +63,18 @@ export default function Home() {
                   }
                   className="text-gray-900 font-medium text-xs opacity-80 hover:opacity-100 cursor-pointer"
                 >
-                  Lihat Selengkapnya
+                  Lihat selengkapnya
                 </div>
               </div>
               <div className="w-full h-fit">
                 <div className="flex flex-col space-y-1 text-gray-500">
                   {topGlobalTrack?.tracks.items.slice(0, 10).map((track, i) => (
                     <Song
-                      key={track.id}
+                      key={track.track.id}
                       track={track}
                       order={i}
-                      playlist={playlistsUser}
+                      playlist={userPlaylists}
+                      spotifyAPI={spotifyAPI}
                     />
                   ))}
                 </div>
@@ -81,13 +86,14 @@ export default function Home() {
         <div className="md:basis-1/2">
           {/* Top Track */}
           <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-white p-4 rounded-md shadow-md">
-            <h2 className="text-lg font-bold">Musik Yang Sering Kamu Dengar</h2>
-            {topTracksUser?.items.slice(0, 5).map((items, i) => (
+            <h2 className="text-lg font-bold">Musik Yang Sering Kamu Putar</h2>
+            {userTopTracks?.items.slice(0, 5).map((items, i) => (
               <TopTrack
                 key={items.id}
                 items={items}
-                playlist={playlistsUser}
+                playlist={userPlaylists}
                 order={i}
+                spotifyAPI={spotifyAPI}
               />
             ))}
           </div>
@@ -101,11 +107,11 @@ export default function Home() {
                 onClick={() => router.push("/playlistPage")}
                 className="text-gray-900 font-medium text-xs opacity-80 hover:opacity-100 cursor-pointer"
               >
-                Lihat Selengkapnya
+                Lihat selengkapnya
               </button>
             </div>
             <div className="flex flex-wrap gap-4 justify-center">
-              {playlistsUser.slice(0, 4).map((playlist) => (
+              {userPlaylists.slice(0, 4).map((playlist) => (
                 <PlaylistComp key={playlist.id} playlist={playlist} />
               ))}
             </div>
@@ -118,6 +124,7 @@ export default function Home() {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+
   if (!session) {
     return {
       redirect: {

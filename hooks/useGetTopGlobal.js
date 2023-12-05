@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import useSpotify from "./useSpotify";
 
-function useGetTopGlobal() {
-  const spotifyAPI = useSpotify();
+function useGetTopGlobal({ spotifyAPI }) {
   const [getTopGlobal, setGetTopGlobal] = useState(null);
 
   useEffect(() => {

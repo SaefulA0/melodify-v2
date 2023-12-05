@@ -5,8 +5,6 @@ import { useRecoilState } from "recoil";
 export default function PlayerV1() {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
-  const WIDTH = 420;
-  const HEIGHT = 250;
 
   return (
     <>

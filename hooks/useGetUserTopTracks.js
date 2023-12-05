@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import useSpotify from "./useSpotify";
 
-function useGetTopTracks() {
-  const spotifyAPI = useSpotify();
-  const [getTopTrack, setGetTopTrack] = useState(null);
+export default function useGetUserTopTracks({ spotifyAPI }) {
+  const [getUserTopTrack, setUserGetTopTrack] = useState(null);
 
   useEffect(() => {
     const fecthGetTopTrack = async () => {
-      const trackInfo = await fetch(
+      const topTracksInfo = await fetch(
         `https://api.spotify.com/v1/me/top/tracks`,
         {
           headers: {
@@ -15,13 +14,11 @@ function useGetTopTracks() {
           },
         }
       ).then((res) => res.json());
-      setGetTopTrack(trackInfo);
+      setUserGetTopTrack(topTracksInfo);
     };
 
     fecthGetTopTrack();
   }, [spotifyAPI]);
 
-  return getTopTrack;
+  return getUserTopTrack;
 }
-
-export default useGetTopTracks;

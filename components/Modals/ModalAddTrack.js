@@ -3,16 +3,13 @@ import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 
-import useSpotify from "../../hooks/useSpotify";
-import AlertFail from "../Alerts/alertFail";
+import AlertFail from "../Alerts/AlertFail";
 
-export default function ModalAddTrack({ idsong, playlist }) {
+export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
   const [selectedPlaylist, setSelectedPlaylist] = useState("");
   const [addFail, setAddFail] = useState("");
 
   let [isOpen, setIsOpen] = useState(false);
-
-  const spotifyAPI = useSpotify();
 
   function closeModal() {
     setIsOpen(false);

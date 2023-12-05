@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import useSpotify from "./useSpotify";
 
-export default function useGetPlaylistsUser() {
-  const spotifyAPI = useSpotify();
-  const [playlistsUser, setPlaylistsUser] = useState([]);
+export default function useGetUserPlaylists({ spotifyAPI }) {
+  const [userPlaylists, setUserPlaylists] = useState([]);
 
   useEffect(() => {
-    const fecthPlaylistsUser = async () => {
-      const playlistsUserInfo = await fetch(
+    const fecthGetUserPlaylists = async () => {
+      const playlistsInfo = await fetch(
         `https://api.spotify.com/v1/me/playlists`,
         {
           headers: {
@@ -15,11 +14,11 @@ export default function useGetPlaylistsUser() {
           },
         }
       ).then((res) => res.json());
-      setPlaylistsUser(playlistsUserInfo.items);
+      setUserPlaylists(playlistsInfo.items);
     };
 
-    fecthPlaylistsUser();
+    fecthGetUserPlaylists();
   }, [spotifyAPI]);
 
-  return playlistsUser;
+  return userPlaylists;
 }

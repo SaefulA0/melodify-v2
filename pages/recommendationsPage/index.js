@@ -6,7 +6,7 @@ import RecommendSong from "../../components/RecommendSongComp";
 import PlaylistComp from "../../components/PlaylistComp";
 import { getSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
-import useGetPlaylistsUser from "../../hooks/useGetPlaylistUser";
+import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import {
   currentMoodState,
   selectedGenreState,
@@ -14,21 +14,20 @@ import {
 import { useRouter } from "next/router";
 
 export default function recommendationsPage() {
-  const getPlaylistsUser = useGetPlaylistsUser();
   const [banner, setBanner] = useState("");
   const [recommendationsMusic, setRecommendationsMusic] = useState();
   const [recommendationsPlaylist, setRecommendationsPlaylist] = useState();
   const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
   // const currentMood = "happy";
-  // const selectedGenre = "pop";
+  // const selectedGenre = "rock";
   const router = useRouter();
+
+  // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
 
-  // RECOMMENDATION
-  // const handleMoodChange = (e) => {
-  //   setMood(e.target.value);
-  // };
+  // GET PLAYLISTS USER
+  const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   useEffect(() => {
     let forBanner = "";
@@ -177,7 +176,11 @@ export default function recommendationsPage() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => router.push("/recommendationsPage/mood")}
+                      onClick={() =>
+                        router.push(
+                          "/recommendationsPage/getRecommendationsPage"
+                        )
+                      }
                       className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                     >
                       Ulangi
@@ -191,10 +194,14 @@ export default function recommendationsPage() {
                     </h3>
                     <button
                       type="button"
-                      onClick={() => router.push("/recommendationsPage/mood")}
+                      onClick={() =>
+                        router.push(
+                          "/recommendationsPage/getRecommendationsPage"
+                        )
+                      }
                       className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                     >
-                      Identifikasi
+                      Dapatkan Rekomendasi
                     </button>
                   </>
                 )}
@@ -236,14 +243,15 @@ export default function recommendationsPage() {
                     key={i}
                     track={track}
                     order={i}
-                    playlist={getPlaylistsUser}
+                    playlist={userPlaylists}
+                    spotifyAPI={spotifyAPI}
                   />
                 ))}
               </div>
             ) : (
               <>
                 <div className="p-5 text-gray-800 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
-                  Identifikasi moodmu terlebih dahulu seblum mendapatkan
+                  Dapatkan rekomendasi terlebih dahulu seblum mendapatkan
                   rekomendasi musik
                 </div>
               </>
@@ -255,7 +263,7 @@ export default function recommendationsPage() {
           {/* Rekomendasi daftar putar*/}
           <div className="mt-12">
             <h2 className="text-lg text-gray-700 font-bold mb-4">
-              Rekomendasi Playlist
+              Rekomendasi Daftar Putar
             </h2>
             {/* card playlist */}
             {recommendationsMusic ? (
@@ -267,7 +275,7 @@ export default function recommendationsPage() {
             ) : (
               <>
                 <div className="p-5 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg text-gray-800">
-                  Identifikasi moodmu terlebih dahulu sebelum mendapatkan
+                  Dapatkan rekomendasi terlebih dahulu sebelum mendapatkan
                   rekomendasi playlist
                 </div>
               </>

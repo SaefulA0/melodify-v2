@@ -4,7 +4,7 @@ import { LiaSpotify } from "react-icons/lia";
 import { useRecoilState } from "recoil";
 import ModalAddTrack from "./Modals/ModalAddTrack";
 
-export default function RecommendSong({ track, order, playlist }) {
+export default function RecommendSong({ track, order, playlist, spotifyAPI }) {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
@@ -44,7 +44,11 @@ export default function RecommendSong({ track, order, playlist }) {
             >
               <LiaSpotify size={24} />
             </a>
-            <ModalAddTrack idsong={track.id} playlist={playlist} />
+            <ModalAddTrack
+              idsong={track.id}
+              playlist={playlist}
+              spotifyAPI={spotifyAPI}
+            />
           </div>
         </div>
       </div>

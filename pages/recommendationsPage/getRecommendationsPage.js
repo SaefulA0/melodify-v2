@@ -9,7 +9,7 @@ import {
 } from "../../atoms/recommendationsAtom";
 import * as faceapi from "face-api.js";
 
-export default function mood() {
+export default function getRecommendationsPage() {
   const [identifiedMood, setIdentifiedMood] = useState(false);
   const [mood, setMood] = useState(null);
   const [genre, setGenre] = useState("");
@@ -69,10 +69,12 @@ export default function mood() {
           setIdentifiedMood(true);
           setMood(detections);
           setStage("result");
+
           // DRAW FACE IN WEBCAM
           canvasRef.current.innerHtml = faceapi.createCanvasFromMedia(
             videoRef.current
           );
+
           faceapi.matchDimensions(canvasRef.current, {
             width: WIDTH,
             height: HEIGHT,
@@ -88,7 +90,7 @@ export default function mood() {
           faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
         }
       }
-    }, 1000);
+    }, 500);
   };
 
   const closeWebcam = () => {

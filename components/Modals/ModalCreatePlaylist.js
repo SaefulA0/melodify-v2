@@ -1,11 +1,9 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { toast } from "react-toastify";
-
-import useSpotify from "../../hooks/useSpotify";
 import { useRouter } from "next/router";
 
-export default function ModalCreatePlaylist() {
+export default function ModalCreatePlaylist({ spotifyAPI }) {
   const router = useRouter();
   const [titlePlaylist, setTitlePlaylist] = useState("");
   const [descriptionPlaylist, setDescriptionPlaylist] = useState("");
@@ -14,14 +12,12 @@ export default function ModalCreatePlaylist() {
 
   let [isOpen, setIsOpen] = useState(false);
 
-  const spotifyAPI = useSpotify();
-
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false);
-  }
-  function openModal() {
+  };
+  const openModal = () => {
     setIsOpen(true);
-  }
+  };
 
   const successToast = () =>
     toast("Daftar Putar Musik berhasil dibuat", {
@@ -54,7 +50,6 @@ export default function ModalCreatePlaylist() {
           public: `${visibility}`,
         })
         .then((data) => {
-          console.log("Playlist berhasil ditambah");
           closeModal();
           successToast();
           setTimeout(() => {
@@ -62,8 +57,6 @@ export default function ModalCreatePlaylist() {
           }, 1800);
         })
         .catch((err) => {
-          message("bzzzz");
-          console.log("Playlist gagal ditambah");
           failToast();
         });
     }

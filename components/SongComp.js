@@ -1,11 +1,10 @@
 import { useRecoilState } from "recoil";
 import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
-import useSpotify from "../hooks/useSpotify";
 import React from "react";
 import { LiaSpotify } from "react-icons/lia";
 import ModalAddTrack from "./Modals/ModalAddTrack";
 
-function Song({ order, track, playlist }) {
+function Song({ order, track, playlist, spotifyAPI }) {
   // const spotifyAPI = useSpotify();
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
@@ -52,7 +51,11 @@ function Song({ order, track, playlist }) {
             >
               <LiaSpotify size={24} />
             </a>
-            <ModalAddTrack idsong={track.track.id} playlist={playlist} />
+            <ModalAddTrack
+              idsong={track.track.id}
+              playlist={playlist}
+              spotifyAPI={spotifyAPI}
+            />
           </div>
         </div>
       </div>
