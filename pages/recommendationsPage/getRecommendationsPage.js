@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "../../components/Layout/LayoutComp";
 import { getSession } from "next-auth/react";
+import { Tooltip } from "react-tooltip";
+import * as faceapi from "face-api.js";
+// STATE MANAGEMENT
 import { useRecoilState } from "recoil";
 import {
   currentMoodState,
   selectedGenreState,
 } from "../../atoms/recommendationsAtom";
-import * as faceapi from "face-api.js";
+// COMPONENTS
+import Layout from "../../components/Layout/LayoutComp";
 
 export default function getRecommendationsPage() {
   const [identifiedMood, setIdentifiedMood] = useState(false);
@@ -15,7 +18,6 @@ export default function getRecommendationsPage() {
   const [genre, setGenre] = useState("");
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [captureVideo, setCaptureVideo] = useState(false);
-  const [stage, setStage] = useState("");
   const router = useRouter();
   const videoRef = useRef();
   const canvasRef = useRef();
@@ -24,7 +26,14 @@ export default function getRecommendationsPage() {
   const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
 
-  const availableGenre = ["pop", "rock", "hip-hop", "edm", "dance"];
+  const availableGenre = [
+    "pop",
+    "rock",
+    "hip-hop",
+    "electronic",
+    "disco",
+    "r-n-b",
+  ];
 
   // OPEN FACE WEBCAM
   useEffect(() => {
@@ -54,9 +63,8 @@ export default function getRecommendationsPage() {
   };
 
   const handleVideoOnPlay = () => {
-    setStage("identify");
     setInterval(async () => {
-      if (canvasRef && canvasRef.current) {
+      if (canvasRef.current && canvasRef.current) {
         const detections = await faceapi
           .detectSingleFace(
             videoRef.current,
@@ -66,12 +74,11 @@ export default function getRecommendationsPage() {
           .withFaceExpressions();
 
         if (detections !== null && detections !== undefined) {
-          setIdentifiedMood(true);
           setMood(detections);
-          setStage("result");
 
           // DRAW FACE IN WEBCAM
-          canvasRef.current.innerHtml = faceapi.createCanvasFromMedia(
+          // ERROR HERE : createCanvasFromMedia - media has not finished loading yet
+          canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
             videoRef.current
           );
 
@@ -88,6 +95,7 @@ export default function getRecommendationsPage() {
           faceapi.draw.drawDetections(canvasRef.current, resized);
           faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
           faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
+          setIdentifiedMood(true);
         }
       }
     }, 500);
@@ -106,11 +114,10 @@ export default function getRecommendationsPage() {
     const max = Math.max.apply(null, scoresArray);
     const index = scoresArray.findIndex((score) => score === max);
     const expression = expressionsArray[index];
-    clearInterval(handleVideoOnPlay);
-    closeWebcam();
     setCurrentMood(expression);
     setSelectedGenre(genre);
-    setStage("finish");
+    clearInterval(handleVideoOnPlay);
+    closeWebcam();
     setTimeout(() => {
       router.push("/recommendationsPage");
     }, 3000);
@@ -119,12 +126,12 @@ export default function getRecommendationsPage() {
   return (
     <>
       <Layout pageTitle="Mood Page">
-        <div className="max-w-full min-h-screen pt-14 px-8 text-gray-800 ">
+        <div className="max-w-full min-h-screen pt-14 px-8 text-gray-800 mb-12">
           {/* main */}
           <h3 className="text-4xl text-gray-900 font-bold mb-10">
             Dapatkan Rekomendasi
           </h3>
-          <div className="container relative mx-auto flex px-5 py-12 mb-12 md:flex-row flex-col items-center bg-white rounded-md border shadow-md">
+          <div className="container relative mx-auto flex px-5 pt-10 pb-24 mb-12 md:flex-row flex-col items-center bg-white rounded-md border shadow-md">
             <div className="relative lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 border">
               <video
                 ref={videoRef}
@@ -138,7 +145,7 @@ export default function getRecommendationsPage() {
                 className="absolute right-0 left-0 top-0 w-full"
               />
             </div>
-            <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+            <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start text-left">
               <h1 className="title-font text-start sm:text-2xl text-xl mb-4 font-medium text-gray-900">
                 Arahkan wajah mu ke kamera
               </h1>
@@ -148,15 +155,19 @@ export default function getRecommendationsPage() {
               </p>
               <div className="">
                 <label className="flex flex-col" htmlFor="genreInput">
-                  Genre musik yang disukai :
+                  <span className="font-semibold">
+                    Genre musik yang disukai :
+                  </span>
                   <select
                     value={genre}
                     onChange={(e) => {
                       setGenre(e.target.value);
                     }}
-                    className="border"
+                    className="border w-1/2"
                   >
-                    <option defaultValue>Pilih salah satu genre</option>
+                    <option hidden value>
+                      Pilih salah satu genre
+                    </option>
                     {availableGenre.map((genres, index) => {
                       return <option key={index}>{genres}</option>;
                     })}
@@ -173,14 +184,39 @@ export default function getRecommendationsPage() {
                   Ambil gambar
                 </button>
               )}
-              {identifiedMood && genre && (
+              {identifiedMood && genre ? (
                 <button
                   type="button"
                   onClick={getRecommendations}
                   className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2.5 px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                 >
-                  Selanjutnya
+                  Dapatkan Rekomendasi
                 </button>
+              ) : (
+                <>
+                  {identifiedMood && !genre ? (
+                    <button
+                      type="button"
+                      disabled
+                      data-tooltip-id="my-tooltip"
+                      data-tooltip-content="Pilih genre terlebih dahulu"
+                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2.5 px-6 rounded-lg text-base shadow-lg"
+                    >
+                      Dapatkan Rekomendasi
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      data-tooltip-id="my-tooltip"
+                      data-tooltip-content="Dapatkan mood terlebih dahulu"
+                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2.5 px-6 rounded-lg text-base shadow-lg"
+                    >
+                      Dapatkan Rekomendasi
+                    </button>
+                  )}
+                  <Tooltip id="my-tooltip" />
+                </>
               )}
             </div>
           </div>

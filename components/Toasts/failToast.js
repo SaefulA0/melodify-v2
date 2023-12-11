@@ -1,10 +1,14 @@
-const successToast = ({ message }) =>
-  toast("Daftar Putar Musik berhasil dibuat", {
-    hideProgressBar: false,
-    autoClose: 1700,
-    type: "success",
-    position: "bottom-left",
-    closeOnClick: true,
-    draggable: true,
-    theme: "light",
-  });
+import React, { useState } from "react";
+
+export default function failToast({ message }) {
+  const failToast = () =>
+    toast("Daftar putar musik gagal disimpan", {
+      hideProgressBar: false,
+      autoClose: 2000,
+      type: "error",
+      position: "bottom-left",
+      closeOnClick: true,
+      draggable: true,
+      theme: "light",
+    });
+}

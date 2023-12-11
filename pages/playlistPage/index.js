@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import Image from "next/image";
+import { getSession } from "next-auth/react";
+// COMPONENTS
 import Layout from "../../components/Layout/LayoutComp";
 import PlaylistComp from "../../components/PlaylistComp";
-import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
-import { getSession } from "next-auth/react";
 import ModalCreatePlaylist from "../../components/Modals/ModalCreatePlaylist";
+// COSTUM HOOKS
 import useSpotify from "../../hooks/useSpotify";
+import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 
 export default function playlistsPage() {
   // GET ACCESSTOKEN
@@ -17,16 +18,14 @@ export default function playlistsPage() {
 
   return (
     <Layout pageTitle="Daftar Putar">
-      <div className="min-h-screen max-w-full px-2 md:px-8 pt-16 md:pt-12 pb-8 md:flex shadow-sm">
+      <div className="min-h-screen max-w-full px-6 pt-16 md:pt-11 md:flex rounded-l-3xl">
         {/* flex kiri */}
         <div className="md:basis-full md:mr-10">
-          {/* home */}
           <div className="md:mb-10">
             <h1 className="text-4xl text-gray-800 font-bold mb-4">
               Daftar Putar
             </h1>
-            {/* <MusicRecommendation /> */}
-            <div className="flex md:justify-between w-full h-32 md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-tl from-zinc-700 via-zinc-900 to-zinc-800 rounded-md">
+            <div className="flex md:justify-between w-full h-36 md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-r from-zinc-800 via-zinc-900 to-zinc-700 rounded-md shadow-lg">
               <div className="mr-2 flex flex-col justify-between items-start">
                 <p className="text-base md:text-xl font-semibold text-slate-200 mb-1">
                   Buatlah suasana yang tak terlupakan dengan daftar putar musik
@@ -34,7 +33,7 @@ export default function playlistsPage() {
                 </p>
                 <ModalCreatePlaylist spotifyAPI={spotifyAPI} />
               </div>
-              <div className="w-32 md:w-40 flex justify-center items-center">
+              <div className="w-44 md:w-40 flex justify-center items-center">
                 <Image
                   src="/imgs/albumCover.png"
                   width={512}
@@ -58,7 +57,6 @@ export default function playlistsPage() {
             </div>
           </div>
         </div>
-
         {/* flex kanan */}
         <div className="md:basis-1/2">{/* playlist */}</div>
       </div>

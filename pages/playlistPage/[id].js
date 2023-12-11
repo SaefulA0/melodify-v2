@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import useSpotify from "../../hooks/useSpotify";
-import Layout from "../../components/Layout/LayoutComp";
-import Song from "../../components/SongComp";
 import { getSession } from "next-auth/react";
-import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
-import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { toast } from "react-toastify";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
+// COMPONENTS
+import Layout from "../../components/Layout/LayoutComp";
+import SongComp from "../../components/SongComp";
+// COSTUM HOOKS
+import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
+import useSpotify from "../../hooks/useSpotify";
+import useSelectedPlaylist from "../../hooks/useSelectedPlaylist";
+import useGetUserTopTracks from "../../hooks/useGetUserTopTracks";
 
-export default function selectedPlaylistPage({ playlistId, session }) {
+export default function selectedPlaylistPage({ playlistId }) {
   const selectedPlaylistId = playlistId;
-  const [playlist, setPlaylist] = useState(null);
 
   // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
@@ -17,13 +20,11 @@ export default function selectedPlaylistPage({ playlistId, session }) {
   // GET PLAYLISTS USER
   const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
-  useEffect(() => {
-    if (spotifyAPI.getAccessToken()) {
-      spotifyAPI.getPlaylist(selectedPlaylistId).then((data) => {
-        setPlaylist(data.body);
-      });
-    }
-  }, [session, spotifyAPI]);
+  // GET SELECTED PLAYLIST
+  const playlist = useSelectedPlaylist({ spotifyAPI, selectedPlaylistId });
+
+  // GET TOP TRACKS USER
+  const userTopTracks = useGetUserTopTracks({ spotifyAPI });
 
   const successToast = () =>
     toast("Daftar putar musik berhasil disimpan", {
@@ -55,19 +56,18 @@ export default function selectedPlaylistPage({ playlistId, session }) {
           public: false,
         })
         .then((data) => {
+          console.log(data);
           successToast();
-          console.log("BENER ", data);
         })
         .catch((err) => {
           failToast();
-          console.log("ADA YANG SALAH ", err);
         });
     }
   };
 
   return (
     <Layout pageTitle={playlist?.name}>
-      <div className="max-w-full min-h-screen px-2 md:px-8 pt-16 md:pt-12 pb-8 md:flex shadow-sm">
+      <div className="min-h-screen max-w-full px-6 pt-16 md:pt-11 md:flex rounded-l-3xl mb-16">
         {/* flex kiri */}
         <div className="md:basis-full md:mr-10">
           {/* Main content */}
@@ -81,7 +81,7 @@ export default function selectedPlaylistPage({ playlistId, session }) {
                 {playlist?.images[0] ? (
                   <img
                     className="rounded-md aspect-square object-cover w-full mb-1"
-                    src={playlist.images?.[0]?.url}
+                    src={playlist?.images?.[0]?.url}
                     width={128}
                     height={128}
                     alt="Album Image"
@@ -105,14 +105,6 @@ export default function selectedPlaylistPage({ playlistId, session }) {
                 </p>
               </div>
               <div className="flex items-center gap-3 absolute right-5 bottom-5 text-white">
-                {/* <a
-                  href={playlist?.external_urls?.spotify}
-                  target="_blank"
-                  className="flex gap-1 items-center bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
-                >
-                  <SlSocialSpotify size={20} />
-                  Buka
-                </a> */}
                 <button
                   onClick={HandleSavePlaylist}
                   className="flex items-center bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
@@ -128,20 +120,48 @@ export default function selectedPlaylistPage({ playlistId, session }) {
             {/* card playlist */}
             <h2 className="text-lg text-gray-800 font-bold mb-4">Musik</h2>
             <div className="flex flex-col space-y-1 text-gray-500">
-              {playlist?.tracks.items.map((track, i) => (
-                <Song
-                  key={i}
-                  track={track}
-                  order={i}
-                  playlist={userPlaylists}
-                />
-              ))}
+              {playlist?.tracks.items >= 0 ? (
+                <p>
+                  Oops sepertinya masih belum ada musik dalam daftar putar ini.
+                </p>
+              ) : (
+                <>
+                  {playlist?.tracks.items.map((items, i) => (
+                    <SongComp
+                      key={items.track.id}
+                      track={items.track}
+                      playlist={userPlaylists}
+                      order={i}
+                      spotifyAPI={spotifyAPI}
+                      length={true}
+                      modelComponent={"Model1"}
+                      playlistId={selectedPlaylistId}
+                    />
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>
-
         {/* flex kanan */}
-        <div className="md:basis-1/2">{/* playlist */}</div>
+        <div className="md:basis-1/2">
+          {/* User Top Track */}
+          <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-white p-4 rounded-md shadow-md">
+            <h2 className="text-lg font-bold">Musik Yang Sering Kamu Putar</h2>
+            {userTopTracks?.items.slice(0, 5).map((items, i) => (
+              <SongComp
+                key={items.id}
+                track={items}
+                playlist={userPlaylists}
+                order={i}
+                spotifyAPI={spotifyAPI}
+                length={false}
+                modelComponent={"Model2"}
+                playlistId={selectedPlaylistId}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </Layout>
   );

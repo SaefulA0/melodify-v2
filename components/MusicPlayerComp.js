@@ -2,7 +2,7 @@ import React from "react";
 import { currentTrackIdState } from "../atoms/songAtom";
 import { useRecoilState } from "recoil";
 
-export default function PlayerV1() {
+export default function MusicPlayerComp() {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
 

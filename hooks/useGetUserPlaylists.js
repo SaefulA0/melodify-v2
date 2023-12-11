@@ -1,23 +1,17 @@
 import { useEffect, useState } from "react";
-import useSpotify from "./useSpotify";
 
-export default function useGetUserPlaylists({ spotifyAPI }) {
+export default function useGetUserPlaylists({ spotifyAPI, userId }) {
   const [userPlaylists, setUserPlaylists] = useState([]);
 
   useEffect(() => {
-    const fecthGetUserPlaylists = async () => {
-      const playlistsInfo = await fetch(
-        `https://api.spotify.com/v1/me/playlists`,
-        {
-          headers: {
-            Authorization: `Bearer ${spotifyAPI.getAccessToken()}`,
-          },
-        }
-      ).then((res) => res.json());
-      setUserPlaylists(playlistsInfo.items);
-    };
-
-    fecthGetUserPlaylists();
+    if (spotifyAPI.getAccessToken(userId)) {
+      spotifyAPI
+        .getUserPlaylists(userId)
+        .then((data) => {
+          setUserPlaylists(data.body.items);
+        })
+        .catch((err) => console.log("Something went wrong!", err));
+    }
   }, [spotifyAPI]);
 
   return userPlaylists;

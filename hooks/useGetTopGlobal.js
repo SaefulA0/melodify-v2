@@ -1,25 +1,15 @@
 import { useEffect, useState } from "react";
 
-function useGetTopGlobal({ spotifyAPI }) {
-  const [getTopGlobal, setGetTopGlobal] = useState(null);
+export default function useGetTopGlobal({ spotifyAPI }) {
+  const [getTopGlobalPlaylist, setGetTopGlobalPlaylist] = useState(null);
 
   useEffect(() => {
-    const fecthGetTopGlobal = async () => {
-      const globalInfo = await fetch(
-        `https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF`,
-        {
-          headers: {
-            Authorization: `Bearer ${spotifyAPI.getAccessToken()}`,
-          },
-        }
-      ).then((res) => res.json());
-      setGetTopGlobal(globalInfo);
-    };
-
-    fecthGetTopGlobal();
+    if (spotifyAPI.getAccessToken()) {
+      spotifyAPI.getPlaylist("37i9dQZEVXbMDoHDwVN2tF").then((data) => {
+        setGetTopGlobalPlaylist(data.body);
+      });
+    }
   }, [spotifyAPI]);
 
-  return getTopGlobal;
+  return getTopGlobalPlaylist;
 }
-
-export default useGetTopGlobal;

@@ -8,7 +8,6 @@ export default function ModalCreatePlaylist({ spotifyAPI }) {
   const [titlePlaylist, setTitlePlaylist] = useState("");
   const [descriptionPlaylist, setDescriptionPlaylist] = useState("");
   const [visibility, setVisibility] = useState(false);
-  const [message, setMessage] = useState("");
 
   let [isOpen, setIsOpen] = useState(false);
 

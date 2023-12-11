@@ -1,19 +1,25 @@
 import { getSession } from "next-auth/react";
-import LayoutComp from "../components/Layout/LayoutComp";
 import { useRouter } from "next/router";
+// COMPONENTS
+import LayoutComp from "../components/Layout/LayoutComp";
 import PlaylistComp from "../components/PlaylistComp";
-import TopTrack from "../components/TopTrackComp";
-import Song from "../components/SongComp";
+import SongComp from "../components/SongComp";
+// CUSTOM HOOKS
 import useGetUserTopTracks from "../hooks/useGetUserTopTracks";
 import useGetUserPlaylists from "../hooks/useGetUserPlaylists";
 import useGetTopGlobal from "../hooks/useGetTopGlobal";
 import useSpotify from "../hooks/useSpotify";
+import useUserInfo from "../hooks/useUserInfo";
 
 export default function HomePage() {
   const router = useRouter();
 
   // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
+
+  // GET USER INFO
+  const userInfo = useUserInfo({ spotifyAPI });
+  const userId = userInfo?.id;
 
   // GET TOP GLOBAL TRACK
   const topGlobalTrack = useGetTopGlobal({ spotifyAPI });
@@ -22,11 +28,11 @@ export default function HomePage() {
   const userTopTracks = useGetUserTopTracks({ spotifyAPI });
 
   // GET PLAYLISTS USER
-  const userPlaylists = useGetUserPlaylists({ spotifyAPI });
+  const userPlaylists = useGetUserPlaylists({ spotifyAPI, userId });
 
   return (
     <LayoutComp pageTitle="Home">
-      <div className="max-w-full min-h-screen px-2 md:px-8 pt-16 md:pt-12 pb-8 md:flex shadow-sm">
+      <div className="min-h-screen max-w-full px-6 pt-16 md:pt-11 md:flex shadow-sm rounded-l-3xl mb-16">
         {/* flex kiri */}
         <div className="md:basis-full md:mr-10">
           {/* home */}
@@ -35,13 +41,23 @@ export default function HomePage() {
             {/* tranding saat ini */}
             <div className="flex justify-start items-center gap-5 w-full h-32 md:h-52 p-4 md:p-10 rounded-t-md bg-gradient-to-b from-zinc-800 via-zinc-950 to-zinc-800">
               <div className="w-32 md:w-40 flex justify-center items-center">
-                <img
-                  src={topGlobalTrack?.images?.[0]?.url}
-                  width={512}
-                  height={512}
-                  alt="Playlist Cover"
-                  className="rounded-xl"
-                />
+                {topGlobalTrack?.images?.[0]?.url ? (
+                  <img
+                    className="rounded-md aspect-square object-cover w-full mb-1"
+                    src={topGlobalTrack?.images?.[0]?.url}
+                    width={128}
+                    height={128}
+                    alt="Album Image"
+                  />
+                ) : (
+                  <img
+                    className="rounded-md aspect-square object-cover w-full mb-1"
+                    src="/imgs/albumCover.png"
+                    width={128}
+                    height={128}
+                    alt="Album Image"
+                  />
+                )}
               </div>
               <div className="mr-2 flex flex-col items-start">
                 <h1 className="text-2xl md:text-5xl font-semibold text-slate-100 mb-1 md:mb-3">
@@ -69,12 +85,14 @@ export default function HomePage() {
               <div className="w-full h-fit">
                 <div className="flex flex-col space-y-1 text-gray-500">
                   {topGlobalTrack?.tracks.items.slice(0, 10).map((track, i) => (
-                    <Song
+                    <SongComp
                       key={track.track.id}
-                      track={track}
+                      track={track.track}
                       order={i}
                       playlist={userPlaylists}
                       spotifyAPI={spotifyAPI}
+                      length={true}
+                      modelComponent={"Model1"}
                     />
                   ))}
                 </div>
@@ -88,12 +106,14 @@ export default function HomePage() {
           <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-white p-4 rounded-md shadow-md">
             <h2 className="text-lg font-bold">Musik Yang Sering Kamu Putar</h2>
             {userTopTracks?.items.slice(0, 5).map((items, i) => (
-              <TopTrack
+              <SongComp
                 key={items.id}
-                items={items}
+                track={items}
                 playlist={userPlaylists}
                 order={i}
                 spotifyAPI={spotifyAPI}
+                length={false}
+                modelComponent={"Model1"}
               />
             ))}
           </div>
@@ -111,7 +131,7 @@ export default function HomePage() {
               </button>
             </div>
             <div className="flex flex-wrap gap-4 justify-center">
-              {userPlaylists.slice(0, 4).map((playlist) => (
+              {userPlaylists?.slice(0, 4).map((playlist) => (
                 <PlaylistComp key={playlist.id} playlist={playlist} />
               ))}
             </div>

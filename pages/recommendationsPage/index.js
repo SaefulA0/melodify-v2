@@ -1,22 +1,26 @@
-import Layout from "../../components/Layout/LayoutComp";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import useSpotify from "../../hooks/useSpotify";
-import RecommendSong from "../../components/RecommendSongComp";
-import PlaylistComp from "../../components/PlaylistComp";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
+// STATE MANAGEMENT
 import { useRecoilState } from "recoil";
-import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import {
   currentMoodState,
   selectedGenreState,
 } from "../../atoms/recommendationsAtom";
-import { useRouter } from "next/router";
+// COMPONENTS
+import Layout from "../../components/Layout/LayoutComp";
+import SongComp from "../../components/SongComp";
+import PlaylistComp from "../../components/PlaylistComp";
+// CUSTOM HOOKS
+import useSpotify from "../../hooks/useSpotify";
+import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
+import useGetRecommendationsMusic from "../../hooks/useGetRecommendationsMusic";
+import useGetRecommendationsPlaylist from "../../hooks/useGetRecommendationsPlaylist";
+import { toast } from "react-toastify";
 
 export default function recommendationsPage() {
   const [banner, setBanner] = useState("");
-  const [recommendationsMusic, setRecommendationsMusic] = useState();
-  const [recommendationsPlaylist, setRecommendationsPlaylist] = useState();
   const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
   // const currentMood = "happy";
@@ -29,140 +33,93 @@ export default function recommendationsPage() {
   // GET PLAYLISTS USER
   const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
+  // GET RECOMMENDATIONS MUSIC
+  const recommendationsMusic = useGetRecommendationsMusic({
+    spotifyAPI,
+    currentMood,
+    selectedGenre,
+  });
+
+  // GET RECOMMENDATIONS PLAYLIST
+  const recommendationsPlaylist = useGetRecommendationsPlaylist({
+    spotifyAPI,
+    currentMood,
+    selectedGenre,
+  });
+
+  // SET ARRAY TRACK ID
+  const trackUris = recommendationsMusic?.tracks?.map((track) => track.uri);
+
+  // SET BANNER
   useEffect(() => {
-    let forBanner = "";
-    // KONDISI SUASANA HATI HAPPY
     if (currentMood === "happy") {
-      forBanner = "Mood kamu saat ini sedang senang";
-      // MENDAPATKAN REKOMENDASI MUSIK
-      spotifyAPI
-        .getRecommendations({
-          min_energy: 0.5,
-          max_energy: 1.0,
-          min_valence: 0.5,
-          max_valence: 1.0,
-          seed_genres: [`${selectedGenre}`],
-        })
-        .then((data) => {
-          setRecommendationsMusic(data.body.tracks);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a happy mood with the ${selectedGenre} genre`,
-          { limit: 8 }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body.playlists.items);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-
-      // KONDISI SUASANA HATI SAD
+      setBanner("Kamu sedang bahagia");
     } else if (currentMood === "sad") {
-      forBanner = "Mood kamu saat ini sedang sedih";
-      // MENDAPATKAN REKOMENDASI MUSIK
-      spotifyAPI
-        .getRecommendations({
-          market: "ID",
-          min_energy: 0.0,
-          max_energy: 0.5,
-          min_valence: 0.0,
-          max_valence: 0.5,
-          seed_genres: [`${selectedGenre}`],
-        })
-        .then((data) => {
-          setRecommendationsMusic(data.body.tracks);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a sad mood with the ${selectedGenre} genre`,
-          {
-            limit: 8,
-          }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body.playlists.items);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-
-      // KONDISI SUASANA HATI CALM
+      setBanner("Kamu sedang sedih");
     } else if (currentMood === "neutral") {
-      forBanner = "Mood kamu saat ini sedang rileks";
-      // MENDAPATKAN REKOMENDASI MUSIK
-      spotifyAPI
-        .getRecommendations({
-          market: "ID",
-          min_energy: 0.0,
-          max_energy: 0.5,
-          min_valence: 0.5,
-          max_valence: 1.0,
-          seed_genres: [`${selectedGenre}`],
-        })
-        .then((data) => {
-          setRecommendationsMusic(data.body.tracks);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a calm mood with the ${selectedGenre} genre`,
-          {
-            limit: 8,
-          }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body.playlists.items);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-
-      // KONDISI SUASANA HATI ANGRY
+      setBanner("Kamu sedang santai");
     } else if (currentMood === "angry") {
-      forBanner = "Mood kamu saat ini sedang marah";
-      // MENDAPATKAN REKOMENDASI MUSIK
-      spotifyAPI
-        .getRecommendations({
-          market: "ID",
-          min_energy: 0.5,
-          max_energy: 1.0,
-          min_valence: 0.0,
-          max_valence: 0.5,
-          seed_genres: [`${selectedGenre}`],
-        })
-        .then((data) => {
-          setRecommendationsMusic(data.body.tracks);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-      // MENDAPATKAN REKOMENDASI DAFTAR PUTAR MUSIK
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a angry mood with the ${selectedGenre} genre`,
-          { limit: 8 }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body.playlists.items);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
+      setBanner("Kamu sedang marah");
     }
+  }, [currentMood]);
 
-    setBanner(forBanner);
-  }, [selectedGenre, currentMood]);
+  const successToast = () =>
+    toast("Rekomendasi musik berhasil disimpan", {
+      hideProgressBar: false,
+      autoClose: 2000,
+      type: "success",
+      position: "bottom-left",
+      closeOnClick: true,
+      draggable: true,
+      theme: "light",
+    });
+
+  const failToast = () =>
+    toast("Rekomendasi musik berhasil disimpan", {
+      hideProgressBar: false,
+      autoClose: 2000,
+      type: "error",
+      position: "bottom-left",
+      closeOnClick: true,
+      draggable: true,
+      theme: "light",
+    });
+
+  const handleSavePlaylist = () => {
+    if (spotifyAPI.getAccessToken()) {
+      spotifyAPI
+        .createPlaylist(`Melodify | ${currentMood}`, {
+          description: `Daftar putar musik ${selectedGenre} ketika mood ${banner}`,
+          public: false,
+        })
+        .then((data) => {
+          spotifyAPI
+            .addTracksToPlaylist(data?.body?.id, trackUris)
+            .then((data) => {
+              successToast();
+            })
+            .catch((err) => {
+              console.log("Error when adding music = ", err);
+              failToast();
+            });
+        })
+        .catch((err) => {
+          console.log("Error when creating playlist = ", err);
+        });
+    }
+  };
 
   return (
     <Layout pageTitle="Rekomendasi">
-      <div className="min-h-screen max-w-full p-8 pt-20 md:pt-11 md:flex shadow-sm rounded-l-3xl">
+      <div className="min-h-screen max-w-full px-6 pt-16 md:pt-11 md:flex shadow-sm rounded-l-3xl mb-16">
         {/* flex kiri */}
         <div className="md:basis-full md:mr-10">
-          {/* home */}
           <div className="md:mb-10">
             <h1 className="text-4xl text-gray-800 font-bold mb-4">
               Rekomendasi
             </h1>
             <div className="flex md:justify-between w-full h-fit md:h-52 mb-5 p-4 md:p-10 bg-gradient-to-r from-zinc-800 via-zinc-900 to-zinc-700 rounded-md shadow-lg">
               <div className="w-full md:w-10/12 mr-2 flex flex-col justify-between items-start">
-                {/* Perlihatkan ekspresi wajahmu. Ungkapkan moodmu dengan satu klik. */}
                 {banner ? (
                   <>
                     <div className="mb-3">
@@ -174,17 +131,25 @@ export default function recommendationsPage() {
                         dengan suasana hati kamu
                       </p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        router.push(
-                          "/recommendationsPage/getRecommendationsPage"
-                        )
-                      }
-                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
-                    >
-                      Ulangi
-                    </button>
+                    <div className="flex flex-row items-center gap-5">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          router.push(
+                            "/recommendationsPage/getRecommendationsPage"
+                          )
+                        }
+                        className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                      >
+                        Ulangi
+                      </button>
+                      <button
+                        onClick={handleSavePlaylist}
+                        className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                      >
+                        Simpan Rekomendasi
+                      </button>
+                    </div>
                   </>
                 ) : (
                   <>
@@ -238,13 +203,15 @@ export default function recommendationsPage() {
             {/* Rekomendasi musik*/}
             {recommendationsMusic ? (
               <div className="w-full h-fit flex flex-col space-y-1 text-gray-500">
-                {recommendationsMusic?.map((track, i) => (
-                  <RecommendSong
+                {recommendationsMusic?.tracks?.map((track, i) => (
+                  <SongComp
                     key={i}
                     track={track}
                     order={i}
                     playlist={userPlaylists}
                     spotifyAPI={spotifyAPI}
+                    length={true}
+                    modelComponent={"Model1"}
                   />
                 ))}
               </div>
@@ -268,7 +235,7 @@ export default function recommendationsPage() {
             {/* card playlist */}
             {recommendationsMusic ? (
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                {recommendationsPlaylist.map((playlist, i) => (
+                {recommendationsPlaylist?.map((playlist, i) => (
                   <PlaylistComp key={i} playlist={playlist} />
                 ))}
               </div>

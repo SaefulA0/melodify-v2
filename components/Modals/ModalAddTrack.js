@@ -7,16 +7,16 @@ import AlertFail from "../Alerts/AlertFail";
 
 export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
   const [selectedPlaylist, setSelectedPlaylist] = useState("");
-  const [addFail, setAddFail] = useState("");
+  const [message, setMessage] = useState("");
 
   let [isOpen, setIsOpen] = useState(false);
 
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false);
-  }
-  function openModal() {
+  };
+  const openModal = () => {
     setIsOpen(true);
-  }
+  };
 
   const successToast = () =>
     toast("Musik berhasil ditambah", {
@@ -50,7 +50,7 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
           closeModal();
         })
         .catch((err) => {
-          setAddFail(
+          setMessage(
             "Pastikan daftar putar yang kamu pilih adalah daftar putar yang kamu buat sendiri."
           );
           failToast();
@@ -62,7 +62,7 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
     <>
       <button
         onClick={openModal}
-        className="flex gap-1 text-gray-700 items-center cursor-pointer text-sm px-2 py-3 hover:bg-gray-400 hover:bg-opacity-20"
+        className="flex gap-1 text-gray-700 items-center cursor-pointer text-sm px-2 py-3 hover:bg-gray-400 hover:bg-opacity-20 rounded-md"
       >
         <MdOutlinePlaylistAdd size={24} />
       </button>
@@ -103,7 +103,7 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
                       Simpan Ke Dalam Daftar Putar
                     </RadioGroup.Label>
                     {/* ALERT */}
-                    {addFail ? <AlertFail message={addFail} /> : null}
+                    {message ? <AlertFail message={message} /> : null}
                     {/* LIST PLAYLISTS */}
                     {playlist.map((playlist, i) => (
                       <RadioGroup.Option

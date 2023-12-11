@@ -1,5 +1,4 @@
-import Player from "../PlayerComp";
-import PlayerV1 from "../playerV1";
+import MusicPlayerComp from "../MusicPlayerComp";
 import React, { useState } from "react";
 import Head from "next/head";
 
@@ -34,7 +33,7 @@ export default function LayoutComp({ pageTitle, children }) {
         </div>
         <div>
           {/* <Player /> */}
-          <PlayerV1 />
+          <MusicPlayerComp />
         </div>
       </div>
     </>
