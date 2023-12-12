@@ -56,7 +56,6 @@ export default function selectedPlaylistPage({ playlistId }) {
           public: false,
         })
         .then((data) => {
-          console.log(data);
           successToast();
         })
         .catch((err) => {
@@ -147,7 +146,7 @@ export default function selectedPlaylistPage({ playlistId }) {
         <div className="md:basis-1/2">
           {/* User Top Track */}
           <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-white p-4 rounded-md shadow-md">
-            <h2 className="text-lg font-bold">Musik Yang Sering Kamu Putar</h2>
+            <h2 className="text-lg font-bold">Musik Favoritmu</h2>
             {userTopTracks?.items.slice(0, 5).map((items, i) => (
               <SongComp
                 key={items.id}

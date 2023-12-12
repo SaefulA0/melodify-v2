@@ -40,8 +40,6 @@ export default function getRecommendationsPage() {
     const loadModels = async () => {
       Promise.all([
         faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-        faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
         faceapi.nets.faceExpressionNet.loadFromUri("/models"),
       ]).then(setModelsLoaded(true));
     };
@@ -70,7 +68,6 @@ export default function getRecommendationsPage() {
             videoRef.current,
             new faceapi.TinyFaceDetectorOptions()
           )
-          .withFaceLandmarks()
           .withFaceExpressions();
 
         if (detections !== null && detections !== undefined) {
@@ -93,7 +90,6 @@ export default function getRecommendationsPage() {
           });
 
           faceapi.draw.drawDetections(canvasRef.current, resized);
-          faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
           faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
           setIdentifiedMood(true);
         }
