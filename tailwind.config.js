@@ -11,7 +11,7 @@ module.exports = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        landingPageBG: "url('/imgs/landingPageBG.png')",
+        landingPageBG: "url('https://i.ibb.co/2S99vKG/Landing-Page-BG.jpg')",
       },
     },
   },

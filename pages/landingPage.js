@@ -20,7 +20,7 @@ export default function landingPage({ providers }) {
                       className="w-24 md:w-32 rounded-md shadow-md"
                       width={500}
                       height={500}
-                      src="/imgs/logoType.png"
+                      src="https://i.ibb.co/SfSGVcs/Logotype.png"
                       alt="logoType"
                     />
                     <div className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
@@ -34,7 +34,7 @@ export default function landingPage({ providers }) {
                 </header>
                 <h1 className="title-font md:text-6xl text-3xl mb-4 font-semibold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 via-black to-gray-600">
                   Melodi mengungkapkan <br className="hidden lg:inline-block" />
-                  apa yang tidak bisa diucapkan.
+                  apa yang tidak bisa diucapkan. UPDATED
                 </h1>
                 <p className="mb-8 leading-relaxed text-base">
                   Dengarkan musik favoritmu dan temukan musik yang sesuai dengan
@@ -59,7 +59,7 @@ export default function landingPage({ providers }) {
                 <img
                   className="hidden md:inline object-cover object-center rounded"
                   alt="Hero"
-                  src="/imgs/landingPageBG.png"
+                  src="https://i.ibb.co/2S99vKG/Landing-Page-BG.jpg"
                 />
               </div>
             </div>
