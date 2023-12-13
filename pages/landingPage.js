@@ -21,7 +21,7 @@ export default function landingPage({ providers }) {
                       width={500}
                       height={500}
                       src="/imgs/logoType.png"
-                      alt="Melodify Logo"
+                      alt="logoType"
                     />
                     <div className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
                       <img
