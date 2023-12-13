@@ -3,7 +3,7 @@ export default function Custom500() {
     <>
       <div className="w-screen h-screen flex flex-col justify-center items-center bg-gray-100">
         <h1 className="text-gray-900 text-2xl font-semibold mb-10">
-          404 | Opps! Terjadi Masalah Pada Server
+          500 | Opps! Terjadi Masalah Pada Server
         </h1>
         <button
           onClick={() => router.back()}
