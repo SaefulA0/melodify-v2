@@ -9,7 +9,7 @@ import useGetUserTopTracks from "../hooks/useGetUserTopTracks";
 import useGetUserPlaylists from "../hooks/useGetUserPlaylists";
 import useGetTopGlobal from "../hooks/useGetTopGlobal";
 import useSpotify from "../hooks/useSpotify";
-import useUserInfo from "../hooks/useUserInfo";
+import useGetUserInfo from "../hooks/useGetUserInfo";
 
 export default function HomePage() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function HomePage() {
   const spotifyAPI = useSpotify();
 
   // GET USER INFO
-  const userInfo = useUserInfo({ spotifyAPI });
+  const userInfo = useGetUserInfo({ spotifyAPI });
   const userId = userInfo?.id;
 
   // GET TOP GLOBAL TRACK

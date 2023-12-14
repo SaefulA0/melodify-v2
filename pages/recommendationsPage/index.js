@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 // STATE MANAGEMENT
 import { useRecoilState } from "recoil";
 import {
@@ -17,14 +18,13 @@ import useSpotify from "../../hooks/useSpotify";
 import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import useGetRecommendationsMusic from "../../hooks/useGetRecommendationsMusic";
 import useGetRecommendationsPlaylist from "../../hooks/useGetRecommendationsPlaylist";
-import { toast } from "react-toastify";
 
 export default function recommendationsPage() {
   const [banner, setBanner] = useState("");
-  const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
-  const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
-  // const currentMood = "happy";
-  // const selectedGenre = "rock";
+  // const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
+  // const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
+  const currentMood = "happy";
+  const selectedGenre = "rock";
   const router = useRouter();
 
   // GET ACCESSTOKEN
@@ -85,7 +85,7 @@ export default function recommendationsPage() {
       theme: "light",
     });
 
-  const handleSavePlaylist = () => {
+  const handleSaveRecommendationsMusik = () => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI
         .createPlaylist(`Melodify | ${currentMood}`, {
@@ -144,7 +144,7 @@ export default function recommendationsPage() {
                         Ulangi
                       </button>
                       <button
-                        onClick={handleSavePlaylist}
+                        onClick={handleSaveRecommendationsMusik}
                         className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                       >
                         Simpan Rekomendasi

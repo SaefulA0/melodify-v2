@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useUserInfo({ spotifyAPI }) {
+export default function useGetUserInfo({ spotifyAPI }) {
   const [getUserInfo, setGetUserInfo] = useState(null);
 
   useEffect(() => {

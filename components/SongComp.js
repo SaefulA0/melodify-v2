@@ -20,7 +20,6 @@ export default function SongComp({
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-  const componentLength = length;
 
   const playSong = () => {
     setCurrentTrackId(track.id);
@@ -84,7 +83,7 @@ export default function SongComp({
           </div>
         </div>
         <div className="flex items-center justify-between ml-auto md:ml-0">
-          {componentLength ? (
+          {length ? (
             <p className="hidden md:inline truncate">{track.album.name}</p>
           ) : (
             <p className="hidden md:inline truncate"> </p>

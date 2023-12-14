@@ -8,7 +8,7 @@ import SongComp from "../../components/SongComp";
 // COSTUM HOOKS
 import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import useSpotify from "../../hooks/useSpotify";
-import useSelectedPlaylist from "../../hooks/useSelectedPlaylist";
+import useGetSelectedPlaylist from "../../hooks/useGetSelectedPlaylist";
 import useGetUserTopTracks from "../../hooks/useGetUserTopTracks";
 
 export default function selectedPlaylistPage({ playlistId }) {
@@ -21,7 +21,7 @@ export default function selectedPlaylistPage({ playlistId }) {
   const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   // GET SELECTED PLAYLIST
-  const playlist = useSelectedPlaylist({ spotifyAPI, selectedPlaylistId });
+  const playlist = useGetSelectedPlaylist({ spotifyAPI, selectedPlaylistId });
 
   // GET TOP TRACKS USER
   const userTopTracks = useGetUserTopTracks({ spotifyAPI });
