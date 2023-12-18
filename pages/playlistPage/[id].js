@@ -8,12 +8,10 @@ import SongComp from "../../components/SongComp";
 // COSTUM HOOKS
 import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import useSpotify from "../../hooks/useSpotify";
-import useGetSelectedPlaylist from "../../hooks/useGetSelectedPlaylist";
+import useGetPlaylist from "../../hooks/useGetPlaylist";
 import useGetUserTopTracks from "../../hooks/useGetUserTopTracks";
 
 export default function selectedPlaylistPage({ playlistId }) {
-  const selectedPlaylistId = playlistId;
-
   // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
 
@@ -21,7 +19,7 @@ export default function selectedPlaylistPage({ playlistId }) {
   const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   // GET SELECTED PLAYLIST
-  const playlist = useGetSelectedPlaylist({ spotifyAPI, selectedPlaylistId });
+  const playlist = useGetPlaylist({ spotifyAPI, playlistId });
 
   // GET TOP TRACKS USER
   const userTopTracks = useGetUserTopTracks({ spotifyAPI });
@@ -52,7 +50,7 @@ export default function selectedPlaylistPage({ playlistId }) {
   const HandleSavePlaylist = () => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI
-        .followPlaylist(`${selectedPlaylistId}`, {
+        .followPlaylist(`${playlistId}`, {
           public: false,
         })
         .then((data) => {
@@ -77,7 +75,7 @@ export default function selectedPlaylistPage({ playlistId }) {
             <div className="relative flex gap-5 w-full min-h-32 md:h-52 p-4 md:p-10 bg-gradient-to-b from-zinc-800 via-zinc-950 to-zinc-800 rounded-t-md">
               {/* <MusicRecommendation /> */}
               <div className="w-24 md:w-40 flex justify-center items-center">
-                {playlist?.images[0] ? (
+                {playlist?.images?.[0] ? (
                   <img
                     className="rounded-md aspect-square object-cover w-full mb-1"
                     src={playlist?.images?.[0]?.url}
@@ -134,7 +132,7 @@ export default function selectedPlaylistPage({ playlistId }) {
                       spotifyAPI={spotifyAPI}
                       length={true}
                       modelComponent={"Model1"}
-                      playlistId={selectedPlaylistId}
+                      playlistId={playlistId}
                     />
                   ))}
                 </>
@@ -156,7 +154,7 @@ export default function selectedPlaylistPage({ playlistId }) {
                 spotifyAPI={spotifyAPI}
                 length={false}
                 modelComponent={"Model2"}
-                playlistId={selectedPlaylistId}
+                playlistId={playlistId}
               />
             ))}
           </div>

@@ -17,7 +17,7 @@ export default function useGetRecommendationsPlaylist({
           { limit: 8 }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body.playlists.items);
+          setGetRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
 
@@ -31,7 +31,7 @@ export default function useGetRecommendationsPlaylist({
           }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body.playlists.items);
+          setGetRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
 
@@ -45,7 +45,7 @@ export default function useGetRecommendationsPlaylist({
           }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body.playlists.items);
+          setGetRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
 
@@ -57,7 +57,7 @@ export default function useGetRecommendationsPlaylist({
           { limit: 8 }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body.playlists.items);
+          setGetRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
     }

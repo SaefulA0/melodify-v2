@@ -25,6 +25,7 @@ export default function getRecommendationsPage() {
   const HEIGHT = 650;
   const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
+  const [recommendationStatus, setRecommendationStatus] = useState(false);
 
   const availableGenre = [
     "pop",
@@ -60,7 +61,7 @@ export default function getRecommendationsPage() {
       });
   };
 
-  const handleVideoOnPlay = () => {
+  const handleDetectFacialExpression = () => {
     setInterval(async () => {
       if (canvasRef.current && canvasRef.current) {
         const detections = await faceapi
@@ -112,7 +113,7 @@ export default function getRecommendationsPage() {
     const expression = expressionsArray[index];
     setCurrentMood(expression);
     setSelectedGenre(genre);
-    clearInterval(handleVideoOnPlay);
+    clearInterval(handleDetectFacialExpression);
     closeWebcam();
     setTimeout(() => {
       router.push("/recommendationsPage");
@@ -133,7 +134,7 @@ export default function getRecommendationsPage() {
                 ref={videoRef}
                 height={HEIGHT}
                 width={WIDTH}
-                onPlay={handleVideoOnPlay}
+                onPlay={handleDetectFacialExpression}
                 crossOrigin="anonymous"
               />
               <canvas

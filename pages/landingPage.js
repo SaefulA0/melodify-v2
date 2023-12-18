@@ -34,7 +34,7 @@ export default function landingPage({ providers }) {
                 </header>
                 <h1 className="title-font md:text-6xl text-3xl mb-4 font-semibold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 via-black to-gray-600">
                   Melodi mengungkapkan <br className="hidden lg:inline-block" />
-                  apa yang tidak bisa diucapkan. UPDATED
+                  apa yang tidak bisa diucapkan.
                 </h1>
                 <p className="mb-8 leading-relaxed text-base">
                   Dengarkan musik favoritmu dan temukan musik yang sesuai dengan

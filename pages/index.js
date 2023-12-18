@@ -7,9 +7,9 @@ import SongComp from "../components/SongComp";
 // CUSTOM HOOKS
 import useGetUserTopTracks from "../hooks/useGetUserTopTracks";
 import useGetUserPlaylists from "../hooks/useGetUserPlaylists";
-import useGetTopGlobal from "../hooks/useGetTopGlobal";
 import useSpotify from "../hooks/useSpotify";
 import useGetUserInfo from "../hooks/useGetUserInfo";
+import useSelectedPlaylist from "../hooks/useGetPlaylist";
 
 export default function HomePage() {
   const router = useRouter();
@@ -17,12 +17,18 @@ export default function HomePage() {
   // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
 
+  // GET TOP GLOBAL TRACK
+  const playlistId = "37i9dQZEVXbMDoHDwVN2tF";
+  const topGlobalTrack = useSelectedPlaylist({
+    spotifyAPI,
+    playlistId,
+  });
+
   // GET USER INFO
   const userInfo = useGetUserInfo({ spotifyAPI });
   const userId = userInfo?.id;
 
-  // GET TOP GLOBAL TRACK
-  const topGlobalTrack = useGetTopGlobal({ spotifyAPI });
+  console.log(userInfo);
 
   // GET TOP TRACK USER
   const userTopTracks = useGetUserTopTracks({ spotifyAPI });

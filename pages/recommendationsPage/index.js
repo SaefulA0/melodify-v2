@@ -3,8 +3,8 @@ import Image from "next/image";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-// STATE MANAGEMENT
 import { useRecoilState } from "recoil";
+// STATE MANAGEMENT
 import {
   currentMoodState,
   selectedGenreState,
@@ -21,17 +21,14 @@ import useGetRecommendationsPlaylist from "../../hooks/useGetRecommendationsPlay
 
 export default function recommendationsPage() {
   const [banner, setBanner] = useState("");
-  // const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
-  // const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
-  const currentMood = "happy";
-  const selectedGenre = "rock";
+  const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
+  const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
+  // const currentMood = "happy";
+  // const selectedGenre = "rock";
   const router = useRouter();
 
   // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
-
-  // GET PLAYLISTS USER
-  const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   // GET RECOMMENDATIONS MUSIC
   const recommendationsMusic = useGetRecommendationsMusic({
@@ -47,8 +44,13 @@ export default function recommendationsPage() {
     selectedGenre,
   });
 
+  // GET PLAYLISTS USER
+  const userPlaylists = useGetUserPlaylists({ spotifyAPI });
+
   // SET ARRAY TRACK ID
   const trackUris = recommendationsMusic?.tracks?.map((track) => track.uri);
+
+  // Tambahkan kondisi currentMood dan selectedGenre
 
   // SET BANNER
   useEffect(() => {
@@ -105,6 +107,7 @@ export default function recommendationsPage() {
         })
         .catch((err) => {
           console.log("Error when creating playlist = ", err);
+          failToast();
         });
     }
   };
@@ -235,9 +238,11 @@ export default function recommendationsPage() {
             {/* card playlist */}
             {recommendationsMusic ? (
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                {recommendationsPlaylist?.map((playlist, i) => (
-                  <PlaylistComp key={i} playlist={playlist} />
-                ))}
+                {recommendationsPlaylist?.playlists?.items?.map(
+                  (playlist, i) => (
+                    <PlaylistComp key={i} playlist={playlist} />
+                  )
+                )}
               </div>
             ) : (
               <>
