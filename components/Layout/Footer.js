@@ -11,7 +11,7 @@ export default function Footer() {
               <span className="font-bold text-slate-300">Spotify</span>
             </p>
             <span class="inline-flex sm:ml-auto sm:mr-10 mr-0 sm:mt-0 mt-4 justify-center sm:justify-start">
-              <p class="text-sm sm:mt-0 mt-4">© 2023 Copyright - Melodify</p>
+              <p class="text-sm sm:mt-0 mt-4">© 2023 Copyright - Melodimix</p>
             </span>
           </div>
         </div>
