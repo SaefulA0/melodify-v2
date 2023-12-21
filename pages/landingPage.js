@@ -21,17 +21,9 @@ export default function landingPage({ providers }) {
                       className="w-24 md:w-32 rounded-md shadow-md"
                       width={500}
                       height={500}
-                      src="https://i.ibb.co/SfSGVcs/Logotype.png"
+                      src="https://i.ibb.co/3MhHYZ9/Logotype.png"
                       alt="logoType"
                     />
-                    {/* <div className="flex flex-col title-font font-medium text-gray-900 mb-4 md:mb-0">
-                      Powered by
-                      <img
-                        className="w-24 md:w-36"
-                        src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png"
-                        alt="Spotify Logo"
-                      />
-                    </div> */}
                   </div>
                 </header>
                 <h1 className="title-font md:text-6xl text-3xl mb-4 font-semibold bg-clip-text text-transparent bg-gradient-to-r from-gray-800 via-black to-gray-600">
