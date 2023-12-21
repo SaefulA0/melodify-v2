@@ -9,7 +9,7 @@ import Footer from "./Footer";
 
 export default function LayoutComp({ pageTitle, children }) {
   // Concatenate page title (if exists) to site title
-  let titleConcat = "Melodify";
+  let titleConcat = "Melodimix";
   if (pageTitle) titleConcat = titleConcat + " | " + pageTitle;
 
   // Mobile sidebar visibility state
