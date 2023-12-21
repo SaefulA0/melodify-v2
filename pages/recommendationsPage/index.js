@@ -90,7 +90,7 @@ export default function recommendationsPage() {
   const handleSaveRecommendationsMusik = () => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI
-        .createPlaylist(`Melodify | ${currentMood}`, {
+        .createPlaylist(`Melodimix | ${currentMood}`, {
           description: `Daftar putar musik ${selectedGenre} ketika mood ${banner}`,
           public: false,
         })

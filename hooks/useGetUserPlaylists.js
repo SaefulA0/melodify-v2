@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function useGetUserPlaylists({ spotifyAPI, userId }) {
-  const [userPlaylists, setUserPlaylists] = useState([]);
+  const [userPlaylists, setUserPlaylists] = useState();
 
   useEffect(() => {
     if (spotifyAPI.getAccessToken(userId)) {

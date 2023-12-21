@@ -104,62 +104,75 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
                     </RadioGroup.Label>
                     {/* ALERT */}
                     {message ? <AlertFail message={message} /> : null}
-                    {/* LIST PLAYLISTS */}
-                    {playlist?.items?.map((playlist, i) => (
-                      <RadioGroup.Option
-                        key={playlist.id}
-                        value={playlist.id}
-                        className={({ active, chacked }) =>
-                          `${
-                            active
-                              ? "ring-2 ring-white/60 ring-offset-2 ring-offset-gray-300 bg-gray-200"
-                              : ""
-                          } 
+                    {playlist?.items >= 0 ? (
+                      <>
+                        <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                          <div className="p-5 text-gray-800 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
+                            Oops sepertinya kamu masih belum memiliki daftar
+                            putar musik.
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* LIST PLAYLISTS */}
+                        {playlist?.items?.map((playlist, i) => (
+                          <RadioGroup.Option
+                            key={playlist.id}
+                            value={playlist.id}
+                            className={({ active, chacked }) =>
+                              `${
+                                active
+                                  ? "ring-2 ring-white/60 ring-offset-2 ring-offset-gray-300 bg-gray-200"
+                                  : ""
+                              } 
                         relative flex cursor-pointer rounded-lg focus:outline-none hover:bg-gray-300 delay-100 bg-transparent duration-300 mb-1
                         `
-                        }
-                      >
-                        {({ active, chacked }) => (
-                          <div className="flex justify-start items-center text-left w-full p-2 rounded-md ">
-                            {playlist.images[0] ? (
-                              <img
-                                src={playlist.images?.[0]?.url}
-                                className="rounded-md aspect-square object-cover w-16 mb-1 mr-3"
-                                width={64}
-                                height={64}
-                                alt="Album Img"
-                              />
-                            ) : (
-                              <img
-                                className="rounded-md aspect-square object-cover w-16 mb-1 mr-3"
-                                src="/imgs/albumCover.png"
-                                width={64}
-                                height={64}
-                                alt="Album Image"
-                              />
+                            }
+                          >
+                            {({ active, chacked }) => (
+                              <div className="flex justify-start items-center text-left w-full p-2 rounded-md ">
+                                {playlist.images[0] ? (
+                                  <img
+                                    src={playlist.images?.[0]?.url}
+                                    className="rounded-md aspect-square object-cover w-16 mb-1 mr-3"
+                                    width={64}
+                                    height={64}
+                                    alt="Album Img"
+                                  />
+                                ) : (
+                                  <img
+                                    className="rounded-md aspect-square object-cover w-16 mb-1 mr-3"
+                                    src="/imgs/albumCover.png"
+                                    width={64}
+                                    height={64}
+                                    alt="Album Image"
+                                  />
+                                )}
+                                <div>
+                                  <RadioGroup.Label
+                                    as="p"
+                                    className={`text-base font-semibold truncate ${
+                                      chacked ? "text-white" : "text-gray-800"
+                                    } mb-1`}
+                                  >
+                                    {playlist.name}
+                                  </RadioGroup.Label>
+                                  <RadioGroup.Description
+                                    as="span"
+                                    className={`text-sm font-normal ${
+                                      chacked ? "text-sky-100" : "text-gray-800"
+                                    } text-opacity-50 line-clamp-1 mb-2`}
+                                  >
+                                    {playlist.description}
+                                  </RadioGroup.Description>
+                                </div>
+                              </div>
                             )}
-                            <div>
-                              <RadioGroup.Label
-                                as="p"
-                                className={`text-base font-semibold truncate ${
-                                  chacked ? "text-white" : "text-gray-800"
-                                } mb-1`}
-                              >
-                                {playlist.name}
-                              </RadioGroup.Label>
-                              <RadioGroup.Description
-                                as="span"
-                                className={`text-sm font-normal ${
-                                  chacked ? "text-sky-100" : "text-gray-800"
-                                } text-opacity-50 line-clamp-1 mb-2`}
-                              >
-                                {playlist.description}
-                              </RadioGroup.Description>
-                            </div>
-                          </div>
-                        )}
-                      </RadioGroup.Option>
-                    ))}
+                          </RadioGroup.Option>
+                        ))}
+                      </>
+                    )}
                   </RadioGroup>
                   <div className="w-full flex justify-end gap-4 mt-4">
                     <button

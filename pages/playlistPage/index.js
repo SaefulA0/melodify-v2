@@ -50,11 +50,19 @@ export default function playlistsPage() {
             <h2 className="text-lg text-gray-800 font-bold mb-4">
               Daftar Putar Kamu
             </h2>
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              {userPlaylists?.items?.map((playlist, i) => (
-                <PlaylistComp key={i} playlist={playlist} />
-              ))}
-            </div>
+            {userPlaylists?.items >= 0 ? (
+              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                <div className="p-5 text-gray-800 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
+                  Oops sepertinya kamu masih belum memiliki daftar putar musik.
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                {userPlaylists?.items?.map((playlist, i) => (
+                  <PlaylistComp key={i} playlist={playlist} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
         {/* flex kanan */}

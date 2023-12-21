@@ -108,18 +108,32 @@ export default function HomePage() {
         <div className="md:basis-1/2">
           {/* Top Track */}
           <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-white p-4 rounded-md shadow-md">
-            <h2 className="text-lg font-bold">Musik Yang Sering Kamu Putar</h2>
-            {userTopTracks?.items.slice(0, 5).map((items, i) => (
-              <SongComp
-                key={items.id}
-                track={items}
-                playlist={userPlaylists}
-                order={i}
-                spotifyAPI={spotifyAPI}
-                length={false}
-                modelComponent={"Model1"}
-              />
-            ))}
+            <h2 className="text-lg font-bold mb-2">
+              Musik Yang Sering Kamu Putar
+            </h2>
+            {userTopTracks?.items >= 0 ? (
+              <>
+                <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                  <div className="p-5 text-gray-800 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
+                    Oops sepertinya kamu masih belum memiliki musik favorit.
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {userTopTracks?.items.slice(0, 5).map((items, i) => (
+                  <SongComp
+                    key={items.id}
+                    track={items}
+                    playlist={userPlaylists}
+                    order={i}
+                    spotifyAPI={spotifyAPI}
+                    length={false}
+                    modelComponent={"Model1"}
+                  />
+                ))}
+              </>
+            )}
           </div>
           {/* card playlist */}
           <div className="mt-12">
@@ -135,9 +149,22 @@ export default function HomePage() {
               </button>
             </div>
             <div className="flex flex-wrap gap-4 justify-center">
-              {userPlaylists?.items?.slice(0, 4).map((playlist) => (
-                <PlaylistComp key={playlist.id} playlist={playlist} />
-              ))}
+              {userPlaylists?.items >= 0 ? (
+                <>
+                  <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <div className="p-5 text-gray-800 text-sm md:text-base flex justify-center items-center w-full h-20 border text-center bg-white shadow-lg rounded-lg">
+                      Oops sepertinya kamu masih belum memiliki daftar putar
+                      musik.
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {userPlaylists?.items?.slice(0, 4).map((playlist) => (
+                    <PlaylistComp key={playlist.id} playlist={playlist} />
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>
