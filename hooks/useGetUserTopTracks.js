@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
 export default function useGetUserTopTracks({ spotifyAPI }) {
-  const [getUserTopTrack, setGetUserGetTopTrack] = useState(null);
+  const [userTopTrack, setUserGetTopTrack] = useState(null);
 
   useEffect(() => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI.getMyTopTracks().then((data) => {
-        setGetUserGetTopTrack(data.body);
+        setUserGetTopTrack(data.body);
       });
     }
   }, [spotifyAPI]);
 
-  return getUserTopTrack;
+  return userTopTrack;
 }

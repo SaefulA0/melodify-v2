@@ -48,7 +48,7 @@ export default function SongComp({
     });
 
   // ADD TRACK TO A PLAYLIST
-  const HandleAddTrack = () => {
+  const handleAddTrack = () => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI
         .addTracksToPlaylist(`${playlistId}`, [`spotify:track:${track.id}`])
@@ -106,7 +106,7 @@ export default function SongComp({
           )}
           {modelComponent == "Model2" && (
             <button
-              onClick={HandleAddTrack}
+              onClick={handleAddTrack}
               className="flex gap-1 text-gray-700 items-center cursor-pointer text-sm px-2 py-3 hover:bg-gray-400 hover:bg-opacity-20 rounded-md"
             >
               <MdOutlinePlaylistAdd size={24} />

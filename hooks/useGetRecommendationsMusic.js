@@ -5,7 +5,7 @@ export default function useGetRecommendationsMusic({
   currentMood,
   selectedGenre,
 }) {
-  const [getRecommendationsMusic, setGetRecommendationsMusic] = useState(null);
+  const [recommendationsMusic, setRecommendationsMusic] = useState(null);
 
   useEffect(() => {
     // KONDISI SUASANA HATI HAPPY
@@ -20,7 +20,7 @@ export default function useGetRecommendationsMusic({
           seed_genres: [`${selectedGenre}`],
         })
         .then((data) => {
-          setGetRecommendationsMusic(data.body);
+          setRecommendationsMusic(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
 
@@ -37,7 +37,7 @@ export default function useGetRecommendationsMusic({
           seed_genres: [`${selectedGenre}`],
         })
         .then((data) => {
-          setGetRecommendationsMusic(data.body);
+          setRecommendationsMusic(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
       // KONDISI SUASANA HATI CALM
@@ -53,7 +53,7 @@ export default function useGetRecommendationsMusic({
           seed_genres: [`${selectedGenre}`],
         })
         .then((data) => {
-          setGetRecommendationsMusic(data.body);
+          setRecommendationsMusic(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
       // KONDISI SUASANA HATI ANGRY
@@ -68,11 +68,11 @@ export default function useGetRecommendationsMusic({
           seed_genres: [`${selectedGenre}`],
         })
         .then((data) => {
-          setGetRecommendationsMusic(data.body);
+          setRecommendationsMusic(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
     }
   }, [selectedGenre, currentMood]);
 
-  return getRecommendationsMusic;
+  return recommendationsMusic;
 }

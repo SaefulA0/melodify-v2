@@ -47,7 +47,7 @@ export default function selectedPlaylistPage({ playlistId }) {
     });
 
   // ADD PLAYLIST TO A LIBRARY
-  const HandleSavePlaylist = () => {
+  const handleSavePlaylist = () => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI
         .followPlaylist(`${playlistId}`, {
@@ -103,7 +103,7 @@ export default function selectedPlaylistPage({ playlistId }) {
               </div>
               <div className="flex items-center gap-3 absolute right-5 bottom-5 text-white">
                 <button
-                  onClick={HandleSavePlaylist}
+                  onClick={handleSavePlaylist}
                   className="flex items-center bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                 >
                   <MdOutlinePlaylistAdd size={20} />

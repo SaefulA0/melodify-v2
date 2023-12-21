@@ -28,8 +28,6 @@ export default function HomePage() {
   const userInfo = useGetUserInfo({ spotifyAPI });
   const userId = userInfo?.id;
 
-  console.log(userInfo);
-
   // GET TOP TRACK USER
   const userTopTracks = useGetUserTopTracks({ spotifyAPI });
 
@@ -137,7 +135,7 @@ export default function HomePage() {
               </button>
             </div>
             <div className="flex flex-wrap gap-4 justify-center">
-              {userPlaylists?.slice(0, 4).map((playlist) => (
+              {userPlaylists?.items?.slice(0, 4).map((playlist) => (
                 <PlaylistComp key={playlist.id} playlist={playlist} />
               ))}
             </div>

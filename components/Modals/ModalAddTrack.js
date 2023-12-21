@@ -41,7 +41,7 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
     });
 
   // ADD TRACK TO A PLAYLIST
-  const HandleAddTrack = () => {
+  const handleAddTrack = () => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI
         .addTracksToPlaylist(`${selectedPlaylist}`, [`spotify:track:${idsong}`])
@@ -105,7 +105,7 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
                     {/* ALERT */}
                     {message ? <AlertFail message={message} /> : null}
                     {/* LIST PLAYLISTS */}
-                    {playlist.map((playlist, i) => (
+                    {playlist?.items?.map((playlist, i) => (
                       <RadioGroup.Option
                         key={playlist.id}
                         value={playlist.id}
@@ -171,17 +171,17 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
                     </button>
                     {selectedPlaylist ? (
                       <button
-                        onClick={HandleAddTrack}
+                        onClick={handleAddTrack}
                         className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-900 bg-gradient-to-tl from-gray-700 via-[#252525] to-gray-800 px-4 py-2 text-sm font-medium text-slate-100 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 focus:outline-none"
                       >
-                        Simpan
+                        Tambah
                       </button>
                     ) : (
                       <button
                         disabled
                         className="w-28 inline-flex justify-center rounded-md shadow-md bg-gray-700 px-4 py-2 text-sm font-medium text-gray-500 opacity-80"
                       >
-                        Simpan
+                        Tambah
                       </button>
                     )}
                   </div>

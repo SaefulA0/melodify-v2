@@ -41,7 +41,7 @@ export default function ModalCreatePlaylist({ spotifyAPI }) {
     });
 
   // CREATE A PLAYLIST
-  const HandleCreatePlaylist = () => {
+  const handleCreatePlaylist = () => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI
         .createPlaylist(`${titlePlaylist}`, {
@@ -168,7 +168,7 @@ export default function ModalCreatePlaylist({ spotifyAPI }) {
                       Tutup
                     </button>
                     <button
-                      onClick={HandleCreatePlaylist}
+                      onClick={handleCreatePlaylist}
                       className="w-28 inline-flex justify-center rounded-md shadow-md border border-gray-900 bg-gradient-to-tl from-gray-700 via-[#252525] to-gray-800 px-4 py-2 text-sm font-medium text-slate-100 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 focus:outline-none"
                     >
                       Buat

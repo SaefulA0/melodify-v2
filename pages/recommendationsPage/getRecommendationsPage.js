@@ -47,6 +47,23 @@ export default function getRecommendationsPage() {
     loadModels();
   }, []);
 
+  // TESTING
+  useEffect(() => {
+    if (captureVideo) {
+      const currentPath = router.asPath;
+      router.beforePopState(({ as }) => {
+        if (as !== currentPath) {
+          closeWebcam();
+        }
+        return true;
+      });
+    }
+    return () => {
+      router.beforePopState(() => true);
+    };
+  }, [router, captureVideo]);
+  // TESTING
+
   const startVideo = () => {
     setCaptureVideo(true);
     navigator.mediaDevices
@@ -123,7 +140,7 @@ export default function getRecommendationsPage() {
   return (
     <>
       <Layout pageTitle="Mood Page">
-        <div className="max-w-full min-h-screen pt-14 px-8 text-gray-800 mb-12">
+        <div className="max-w-full min-h-screen pt-14 px-8 text-gray-800 mb-24">
           {/* main */}
           <h3 className="text-4xl text-gray-900 font-bold mb-10">
             Dapatkan Rekomendasi
@@ -178,7 +195,7 @@ export default function getRecommendationsPage() {
                   onClick={startVideo}
                   className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2.5 px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                 >
-                  Ambil gambar
+                  Mulai
                 </button>
               )}
               {identifiedMood && genre ? (

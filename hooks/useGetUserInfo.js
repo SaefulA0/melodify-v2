@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
 export default function useGetUserInfo({ spotifyAPI }) {
-  const [getUserInfo, setGetUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     if (spotifyAPI.getAccessToken()) {
       spotifyAPI.getMe().then((data) => {
-        setGetUserInfo(data.body);
+        setUserInfo(data.body);
       });
     }
   }, [spotifyAPI]);
 
-  return getUserInfo;
+  return userInfo;
 }

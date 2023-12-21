@@ -51,7 +51,7 @@ export default function playlistsPage() {
               Daftar Putar Kamu
             </h2>
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              {userPlaylists.map((playlist, i) => (
+              {userPlaylists?.items?.map((playlist, i) => (
                 <PlaylistComp key={i} playlist={playlist} />
               ))}
             </div>

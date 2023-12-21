@@ -5,8 +5,7 @@ export default function useGetRecommendationsPlaylist({
   currentMood,
   selectedGenre,
 }) {
-  const [getRecommendationsPlaylist, setGetRecommendationsPlaylist] =
-    useState(null);
+  const [recommendationsPlaylist, setRecommendationsPlaylist] = useState(null);
 
   useEffect(() => {
     // KONDISI SUASANA HATI HAPPY
@@ -17,7 +16,7 @@ export default function useGetRecommendationsPlaylist({
           { limit: 8 }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body);
+          setRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
 
@@ -31,7 +30,7 @@ export default function useGetRecommendationsPlaylist({
           }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body);
+          setRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
 
@@ -45,7 +44,7 @@ export default function useGetRecommendationsPlaylist({
           }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body);
+          setRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
 
@@ -57,11 +56,11 @@ export default function useGetRecommendationsPlaylist({
           { limit: 8 }
         )
         .then((data) => {
-          setGetRecommendationsPlaylist(data.body);
+          setRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
     }
   }, [selectedGenre, currentMood]);
 
-  return getRecommendationsPlaylist;
+  return recommendationsPlaylist;
 }

@@ -8,7 +8,7 @@ export default function useGetUserPlaylists({ spotifyAPI, userId }) {
       spotifyAPI
         .getUserPlaylists(userId)
         .then((data) => {
-          setUserPlaylists(data.body.items);
+          setUserPlaylists(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
     }
