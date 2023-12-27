@@ -11,7 +11,7 @@ import useSpotify from "../hooks/useSpotify";
 import useGetUserInfo from "../hooks/useGetUserInfo";
 import useSelectedPlaylist from "../hooks/useGetPlaylist";
 
-export default function HomePage() {
+export default function homePage() {
   const router = useRouter();
 
   // GET ACCESSTOKEN

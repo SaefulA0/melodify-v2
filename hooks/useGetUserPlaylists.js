@@ -5,12 +5,9 @@ export default function useGetUserPlaylists({ spotifyAPI, userId }) {
 
   useEffect(() => {
     if (spotifyAPI.getAccessToken(userId)) {
-      spotifyAPI
-        .getUserPlaylists(userId)
-        .then((data) => {
-          setUserPlaylists(data.body);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
+      spotifyAPI.getUserPlaylists(userId).then((data) => {
+        setUserPlaylists(data.body);
+      });
     }
   }, [spotifyAPI]);
 

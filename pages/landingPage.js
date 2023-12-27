@@ -43,7 +43,7 @@ export default function landingPage({ providers }) {
                           signIn(provider.id, { callbackUrl: "/" })
                         }
                       >
-                        Masuk
+                        Masuk Dengan Spotify
                       </button>
                     </div>
                   ))}

@@ -24,7 +24,7 @@ export default function recommendationsPage() {
   const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
   // const currentMood = "happy";
-  // const selectedGenre = "rock";
+  // const selectedGenre = "pop";
   const router = useRouter();
 
   // GET ACCESSTOKEN

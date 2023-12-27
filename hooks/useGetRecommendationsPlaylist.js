@@ -8,7 +8,6 @@ export default function useGetRecommendationsPlaylist({
   const [recommendationsPlaylist, setRecommendationsPlaylist] = useState(null);
 
   useEffect(() => {
-    // KONDISI SUASANA HATI HAPPY
     if (currentMood === "happy") {
       spotifyAPI
         .searchPlaylists(
@@ -19,8 +18,6 @@ export default function useGetRecommendationsPlaylist({
           setRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
-
-      // KONDISI SUASANA HATI SAD
     } else if (currentMood === "sad") {
       spotifyAPI
         .searchPlaylists(
@@ -33,8 +30,6 @@ export default function useGetRecommendationsPlaylist({
           setRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
-
-      // KONDISI SUASANA HATI CALM
     } else if (currentMood === "neutral") {
       spotifyAPI
         .searchPlaylists(
@@ -47,8 +42,6 @@ export default function useGetRecommendationsPlaylist({
           setRecommendationsPlaylist(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
-
-      // KONDISI SUASANA HATI ANGRY
     } else if (currentMood === "angry") {
       spotifyAPI
         .searchPlaylists(

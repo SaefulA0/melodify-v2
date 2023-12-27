@@ -36,7 +36,7 @@ export default function getRecommendationsPage() {
     "r-n-b",
   ];
 
-  // OPEN FACE WEBCAM
+  // Load models
   useEffect(() => {
     const loadModels = async () => {
       Promise.all([
@@ -79,40 +79,48 @@ export default function getRecommendationsPage() {
   };
 
   const handleDetectFacialExpression = () => {
+    // Set up an interval to repeatedly perform facial expression detection
     setInterval(async () => {
-      if (canvasRef.current && canvasRef.current) {
+      // Check if the required elements (canvas and video) are available
+      if (canvasRef.current && videoRef.current) {
+        // Detect faces and facial expressions using face-api.js
         const detections = await faceapi
           .detectSingleFace(
             videoRef.current,
             new faceapi.TinyFaceDetectorOptions()
           )
           .withFaceExpressions();
-
+        // If facial expressions are detected
         if (detections !== null && detections !== undefined) {
+          // Update the mood state with the detected expressions
           setMood(detections);
 
-          // DRAW FACE IN WEBCAM
-          // ERROR HERE : createCanvasFromMedia - media has not finished loading yet
+          // Draw the detected facial expressions on the canvas
           canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
             videoRef.current
           );
 
+          // Match the dimensions of the canvas to the specified width and height
           faceapi.matchDimensions(canvasRef.current, {
             width: WIDTH,
             height: HEIGHT,
           });
 
+          // Resize the detected results to fit the specified dimensions
           const resized = faceapi.resizeResults(detections, {
             width: WIDTH,
             height: HEIGHT,
           });
 
+          // Draw the detected facial features on the canvas
           faceapi.draw.drawDetections(canvasRef.current, resized);
           faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
+
+          // Set a flag indicating that the mood has been identified
           setIdentifiedMood(true);
         }
       }
-    }, 500);
+    }, 500); // Execute the interval every 500 milliseconds
   };
 
   const closeWebcam = () => {

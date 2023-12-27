@@ -8,9 +8,7 @@ export default function useGetRecommendationsMusic({
   const [recommendationsMusic, setRecommendationsMusic] = useState(null);
 
   useEffect(() => {
-    // KONDISI SUASANA HATI HAPPY
     if (currentMood === "happy") {
-      // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
           min_energy: 0.5,
@@ -23,10 +21,7 @@ export default function useGetRecommendationsMusic({
           setRecommendationsMusic(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
-
-      // KONDISI SUASANA HATI SAD
     } else if (currentMood === "sad") {
-      // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
           market: "ID",
@@ -40,9 +35,7 @@ export default function useGetRecommendationsMusic({
           setRecommendationsMusic(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
-      // KONDISI SUASANA HATI CALM
     } else if (currentMood === "neutral") {
-      // MENDAPATKAN REKOMENDASI MUSIK
       spotifyAPI
         .getRecommendations({
           market: "ID",
@@ -56,7 +49,6 @@ export default function useGetRecommendationsMusic({
           setRecommendationsMusic(data.body);
         })
         .catch((err) => console.log("Something went wrong!", err));
-      // KONDISI SUASANA HATI ANGRY
     } else if (currentMood === "angry") {
       spotifyAPI
         .getRecommendations({
