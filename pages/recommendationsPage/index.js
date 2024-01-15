@@ -142,13 +142,13 @@ export default function recommendationsPage() {
                             "/recommendationsPage/getRecommendationsPage"
                           )
                         }
-                        className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                        className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2 md:py-2.5 px-3 md:px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                       >
                         Ulangi
                       </button>
                       <button
                         onClick={handleSaveRecommendationsMusik}
-                        className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                        className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2 md:py-2.5 px-3 md:px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                       >
                         Simpan Rekomendasi
                       </button>
@@ -167,7 +167,7 @@ export default function recommendationsPage() {
                           "/recommendationsPage/getRecommendationsPage"
                         )
                       }
-                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-1.5 px-4 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2 md:py-2.5 px-3 md:px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
                     >
                       Dapatkan Rekomendasi
                     </button>

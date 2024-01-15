@@ -21,8 +21,8 @@ export default function getRecommendationsPage() {
   const router = useRouter();
   const videoRef = useRef();
   const canvasRef = useRef();
-  const WIDTH = 940;
-  const HEIGHT = 650;
+  const WIDTH = 640;
+  const HEIGHT = 480;
   const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
   const [recommendationStatus, setRecommendationStatus] = useState(false);
@@ -153,7 +153,7 @@ export default function getRecommendationsPage() {
               />
               <canvas
                 ref={canvasRef}
-                className="absolute right-0 left-0 top-0 w-full"
+                className="absolute border border-red-500 right-0 left-0 top-0 w-full"
               />
             </div>
             <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start text-left">
@@ -190,14 +190,14 @@ export default function getRecommendationsPage() {
               {captureVideo ? (
                 <button
                   onClick={startVideo}
-                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2.5 px-6 rounded-lg text-base shadow-lg"
+                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2 md:py-2.5 px-4 md:px-6 rounded-lg text-sm md:text-base shadow-lg"
                 >
                   Mulai
                 </button>
               ) : (
                 <button
                   onClick={startVideo}
-                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2.5 px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2 md:py-2.5 px-4 md:px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-sm md:text-base font-medium shadow-lg"
                 >
                   Mulai
                 </button>
@@ -206,7 +206,7 @@ export default function getRecommendationsPage() {
                 <button
                   type="button"
                   onClick={getRecommendations}
-                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2.5 px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"
+                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2 md:py-2.5 px-4 md:px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-sm md:text-base font-medium shadow-lg"
                 >
                   Dapatkan Rekomendasi
                 </button>
@@ -218,7 +218,7 @@ export default function getRecommendationsPage() {
                       disabled
                       data-tooltip-id="my-tooltip"
                       data-tooltip-content="Pilih genre terlebih dahulu"
-                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2.5 px-6 rounded-lg text-base shadow-lg"
+                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2 md:py-2.5 px-4 md:px-6 rounded-lg text-sm md:text-base shadow-lg"
                     >
                       Dapatkan Rekomendasi
                     </button>
@@ -228,7 +228,7 @@ export default function getRecommendationsPage() {
                       disabled
                       data-tooltip-id="my-tooltip"
                       data-tooltip-content="Dapatkan mood terlebih dahulu"
-                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2.5 px-6 rounded-lg text-base shadow-lg"
+                      className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2 md:py-2.5 px-4 md:px-6 rounded-lg text-sm md:text-base shadow-lg"
                     >
                       Dapatkan Rekomendasi
                     </button>
