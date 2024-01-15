@@ -143,7 +143,7 @@ export default function getRecommendationsPage() {
             Dapatkan Rekomendasi
           </h3>
           <div className="container relative mx-auto flex px-5 pt-10 pb-24 mb-12 md:flex-row flex-col items-center bg-white rounded-md border shadow-md">
-            <div className="relative lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 border">
+            <div className="relative aspect-video lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 border">
               <video
                 ref={videoRef}
                 height={HEIGHT}
@@ -153,6 +153,8 @@ export default function getRecommendationsPage() {
               />
               <canvas
                 ref={canvasRef}
+                height={HEIGHT}
+                width={WIDTH}
                 className="absolute border border-red-500 right-0 left-0 top-0 w-full"
               />
             </div>
