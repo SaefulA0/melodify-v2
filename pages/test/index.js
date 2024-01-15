@@ -8,6 +8,7 @@ import {
   currentMoodState,
   selectedGenreState,
 } from "../../atoms/recommendationsAtom";
+import { toast } from "react-toastify";
 // COMPONENTS
 import Layout from "../../components/Layout/LayoutComp";
 import SongComp from "../../components/SongComp";
@@ -15,15 +16,14 @@ import PlaylistComp from "../../components/PlaylistComp";
 // CUSTOM HOOKS
 import useSpotify from "../../hooks/useSpotify";
 import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
-import useGetRecommendationsMusic from "../../hooks/useGetRecommendationsMusic";
-import useGetRecommendationsPlaylist from "../../hooks/useGetRecommendationsPlaylist";
-import { toast } from "react-toastify";
+import useTestHooks from "../../hooks/useTestHooksPlaylist";
+import useTestHooksMusic from "../../hooks/useTestHooksMusic";
 
 export default function testPage() {
   const [banner, setBanner] = useState("");
   // const [currentMood, setCurrentMood] = useRecoilState(currentMoodState);
   // const [selectedGenre, setSelectedGenre] = useRecoilState(selectedGenreState);
-  const currentMood = "happy";
+  const currentMood = "sad";
   const selectedGenre = "rock";
   const router = useRouter();
 
@@ -34,18 +34,19 @@ export default function testPage() {
   const userPlaylists = useGetUserPlaylists({ spotifyAPI });
 
   // GET RECOMMENDATIONS MUSIC
-  const recommendationsMusic = useGetRecommendationsMusic({
+  const recommendationsMusic = useTestHooksMusic({
     spotifyAPI,
     currentMood,
     selectedGenre,
   });
 
   // GET RECOMMENDATIONS PLAYLIST
-  const recommendationsPlaylist = useGetRecommendationsPlaylist({
+  const recommendationsPlaylist = useTestHooks({
     spotifyAPI,
     currentMood,
     selectedGenre,
   });
+  console.log(recommendationsPlaylist);
 
   // SET ARRAY TRACK ID
   const trackUris = recommendationsMusic?.tracks?.map((track) => track.uri);
@@ -231,11 +232,13 @@ export default function testPage() {
               Rekomendasi Daftar Putar
             </h2>
             {/* card playlist */}
-            {recommendationsMusic ? (
+            {recommendationsPlaylist ? (
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                {recommendationsPlaylist?.map((playlist, i) => (
-                  <PlaylistComp key={i} playlist={playlist} />
-                ))}
+                {recommendationsPlaylist?.playlists?.items?.map(
+                  (playlist, i) => (
+                    <PlaylistComp key={i} playlist={playlist} />
+                  )
+                )}
               </div>
             ) : (
               <>

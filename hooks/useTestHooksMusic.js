@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
-export default function useGetRecommendationsMusic({
+export default function useTestHooksMusic({
   spotifyAPI,
   currentMood,
   selectedGenre,
 }) {
-  const [recommendationsMusic, setRecommendationsMusic] = useState();
+  const [recommendationsMusic, setRecommendationsMusic] = useState(null);
 
   useEffect(() => {
-    const fetchRecommendationsMusic = async () => {
+    const fetchRecommendations = async () => {
       try {
-        let options = {
+        const options = {
           market: "ID",
           seed_genres: [`${selectedGenre}`],
         };
@@ -43,7 +43,6 @@ export default function useGetRecommendationsMusic({
           default:
             break;
         }
-
         const data = await spotifyAPI.getRecommendations(options);
         setRecommendationsMusic(data.body);
       } catch (error) {
@@ -51,9 +50,7 @@ export default function useGetRecommendationsMusic({
       }
     };
 
-    if (currentMood && selectedGenre) {
-      fetchRecommendationsMusic();
-    }
+    fetchRecommendations();
   }, [selectedGenre, currentMood, spotifyAPI]);
 
   return recommendationsMusic;

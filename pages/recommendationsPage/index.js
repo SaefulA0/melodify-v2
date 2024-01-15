@@ -236,7 +236,7 @@ export default function recommendationsPage() {
               Rekomendasi Daftar Putar
             </h2>
             {/* card playlist */}
-            {recommendationsMusic ? (
+            {recommendationsPlaylist ? (
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                 {recommendationsPlaylist?.playlists?.items?.map(
                   (playlist, i) => (

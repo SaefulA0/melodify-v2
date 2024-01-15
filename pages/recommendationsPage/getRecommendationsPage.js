@@ -79,48 +79,37 @@ export default function getRecommendationsPage() {
   };
 
   const handleDetectFacialExpression = () => {
-    // Set up an interval to repeatedly perform facial expression detection
     setInterval(async () => {
-      // Check if the required elements (canvas and video) are available
       if (canvasRef.current && videoRef.current) {
-        // Detect faces and facial expressions using face-api.js
         const detections = await faceapi
           .detectSingleFace(
             videoRef.current,
             new faceapi.TinyFaceDetectorOptions()
           )
           .withFaceExpressions();
-        // If facial expressions are detected
         if (detections !== null && detections !== undefined) {
-          // Update the mood state with the detected expressions
           setMood(detections);
 
-          // Draw the detected facial expressions on the canvas
           canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
             videoRef.current
           );
 
-          // Match the dimensions of the canvas to the specified width and height
           faceapi.matchDimensions(canvasRef.current, {
             width: WIDTH,
             height: HEIGHT,
           });
 
-          // Resize the detected results to fit the specified dimensions
           const resized = faceapi.resizeResults(detections, {
             width: WIDTH,
             height: HEIGHT,
           });
 
-          // Draw the detected facial features on the canvas
           faceapi.draw.drawDetections(canvasRef.current, resized);
           faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
-
-          // Set a flag indicating that the mood has been identified
           setIdentifiedMood(true);
         }
       }
-    }, 500); // Execute the interval every 500 milliseconds
+    }, 500);
   };
 
   const closeWebcam = () => {
@@ -185,7 +174,7 @@ export default function getRecommendationsPage() {
                     onChange={(e) => {
                       setGenre(e.target.value);
                     }}
-                    className="border w-1/2"
+                    className="border w-1/2 md:w-full"
                   >
                     <option hidden value>
                       Pilih salah satu genre
@@ -198,7 +187,14 @@ export default function getRecommendationsPage() {
               </div>
             </div>
             <div className="absolute bottom-5 right-5 flex gap-2">
-              {captureVideo ? null : (
+              {captureVideo ? (
+                <button
+                  onClick={startVideo}
+                  className="flex-shrink-0 text-white bg-gradient-to-r from-[#86350f] to-[#894e00] border-0 py-2.5 px-6 rounded-lg text-base shadow-lg"
+                >
+                  Mulai
+                </button>
+              ) : (
                 <button
                   onClick={startVideo}
                   className="flex-shrink-0 text-white bg-gradient-to-r from-[#EF733A] to-[#EF9E33] border-0 py-2.5 px-6 focus:outline-none transition ease-in-out hover:-translate-y-1 duration-300 rounded-lg text-base shadow-lg"

@@ -5,55 +5,25 @@ export default function useGetRecommendationsPlaylist({
   currentMood,
   selectedGenre,
 }) {
-  const [recommendationsPlaylist, setRecommendationsPlaylist] = useState(null);
+  const [recommendationsPlaylist, setRecommendationsPlaylist] = useState();
+
+  const fetchRecommendationsPlaylist = async (currentMood, selectedGenre) => {
+    try {
+      const response = await spotifyAPI.searchPlaylists(
+        `Playlist for a ${currentMood} mood with the ${selectedGenre} genre`,
+        { limit: 10 }
+      );
+      setRecommendationsPlaylist(response.body);
+    } catch (error) {
+      console.error("Something went wrong!", error);
+    }
+  };
 
   useEffect(() => {
-    if (currentMood === "happy") {
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a happy mood with the ${selectedGenre} genre`,
-          { limit: 8 }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-    } else if (currentMood === "sad") {
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a sad mood with the ${selectedGenre} genre`,
-          {
-            limit: 8,
-          }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-    } else if (currentMood === "neutral") {
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a calm mood with the ${selectedGenre} genre`,
-          {
-            limit: 8,
-          }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
-    } else if (currentMood === "angry") {
-      spotifyAPI
-        .searchPlaylists(
-          `Playlist for a angry mood with the ${selectedGenre} genre`,
-          { limit: 8 }
-        )
-        .then((data) => {
-          setRecommendationsPlaylist(data.body);
-        })
-        .catch((err) => console.log("Something went wrong!", err));
+    if (currentMood && selectedGenre) {
+      fetchRecommendationsPlaylist(currentMood, selectedGenre);
     }
-  }, [selectedGenre, currentMood]);
+  }, [currentMood, selectedGenre, spotifyAPI]);
 
   return recommendationsPlaylist;
 }
