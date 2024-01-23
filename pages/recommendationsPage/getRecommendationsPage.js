@@ -143,19 +143,20 @@ export default function getRecommendationsPage() {
             Dapatkan Rekomendasi
           </h3>
           <div className="container relative mx-auto flex px-5 pt-10 pb-24 mb-12 md:flex-row flex-col items-center bg-white rounded-md border shadow-md">
-            <div className="relative aspect-video lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 border">
+            <div className="relative flex flex-col justify-center items-center lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0 border">
               <video
                 ref={videoRef}
                 height={HEIGHT}
                 width={WIDTH}
                 onPlay={handleDetectFacialExpression}
                 crossOrigin="anonymous"
+                className="w-full"
               />
               <canvas
                 ref={canvasRef}
                 height={HEIGHT}
                 width={WIDTH}
-                className="absolute border border-red-500 right-0 left-0 top-0 w-full"
+                className="absolute right-0 left-0 top-0 bottom-0 z-10 w-full h-full border border-blue-600"
               />
             </div>
             <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start text-left">

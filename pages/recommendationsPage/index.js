@@ -18,6 +18,7 @@ import useSpotify from "../../hooks/useSpotify";
 import useGetUserPlaylists from "../../hooks/useGetUserPlaylists";
 import useGetRecommendationsMusic from "../../hooks/useGetRecommendationsMusic";
 import useGetRecommendationsPlaylist from "../../hooks/useGetRecommendationsPlaylist";
+import useGetUserInfo from "../../hooks/useGetUserInfo";
 
 export default function recommendationsPage() {
   const [banner, setBanner] = useState("");
@@ -30,11 +31,16 @@ export default function recommendationsPage() {
   // GET ACCESSTOKEN
   const spotifyAPI = useSpotify();
 
+  // GET USER
+  const userInfo = useGetUserInfo({ spotifyAPI });
+  const userRegion = userInfo?.country;
+
   // GET RECOMMENDATIONS MUSIC
   const recommendationsMusic = useGetRecommendationsMusic({
     spotifyAPI,
     currentMood,
     selectedGenre,
+    userRegion,
   });
 
   // GET RECOMMENDATIONS PLAYLIST
@@ -55,7 +61,7 @@ export default function recommendationsPage() {
   // SET BANNER
   useEffect(() => {
     if (currentMood === "happy") {
-      setBanner("Kamu sedang bahagia");
+      setBanner("Kamu sedang senang");
     } else if (currentMood === "sad") {
       setBanner("Kamu sedang sedih");
     } else if (currentMood === "neutral") {
