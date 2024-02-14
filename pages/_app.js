@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { RecoilRoot } from "recoil";
 import { Flip, ToastContainer } from "react-toastify";
-import Loading from "../components/Loading";
+import LoadingComp from "../components/LoadingComp";
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,7 +30,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <RecoilRoot>
-        {isLoading && <Loading />}
+        {isLoading && <LoadingComp />}
         <Component {...pageProps} />
         <ToastContainer transition={Flip} />
       </RecoilRoot>

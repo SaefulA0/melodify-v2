@@ -1,7 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
-export default function Header() {
+export default function HeaderComp() {
   const { data: session } = useSession();
 
   return (

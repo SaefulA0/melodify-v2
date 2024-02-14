@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Footer() {
+export default function FooterComp() {
   return (
     <>
       <footer className="text-slate-400">

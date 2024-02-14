@@ -9,7 +9,7 @@ import { MdOutlineLibraryMusic } from "react-icons/md";
 import { signOut, useSession } from "next-auth/react";
 import { BiLogIn } from "react-icons/bi";
 
-export default function Sidebar({ show, setter }) {
+export default function SidebarComp({ show, setter }) {
   const router = useRouter();
   const { data: session } = useSession();
 

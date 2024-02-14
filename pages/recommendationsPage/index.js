@@ -121,7 +121,7 @@ export default function recommendationsPage() {
   return (
     <Layout pageTitle="Rekomendasi">
       <div className="min-h-screen max-w-full px-6 pt-16 md:pt-11 md:flex shadow-sm rounded-l-3xl mb-16">
-        {/* flex kiri */}
+        {/* flex left */}
         <div className="md:basis-full md:mr-10">
           <div className="md:mb-10">
             <h1 className="text-4xl text-gray-800 font-bold mb-4">
@@ -234,7 +234,7 @@ export default function recommendationsPage() {
             )}
           </div>
         </div>
-        {/* flex kanan */}
+        {/* flex right */}
         <div className="md:basis-1/2">
           {/* Rekomendasi daftar putar*/}
           <div className="mt-12">

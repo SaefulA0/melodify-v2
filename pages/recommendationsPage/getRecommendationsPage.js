@@ -47,7 +47,6 @@ export default function getRecommendationsPage() {
     loadModels();
   }, []);
 
-  // TESTING
   useEffect(() => {
     if (captureVideo) {
       const currentPath = router.asPath;
@@ -62,7 +61,6 @@ export default function getRecommendationsPage() {
       router.beforePopState(() => true);
     };
   }, [router, captureVideo]);
-  // TESTING
 
   const startVideo = () => {
     setCaptureVideo(true);
@@ -156,7 +154,7 @@ export default function getRecommendationsPage() {
                 ref={canvasRef}
                 height={HEIGHT}
                 width={WIDTH}
-                className="absolute right-0 left-0 top-0 bottom-0 z-10 w-full h-full border border-blue-600"
+                className="absolute right-0 left-0 top-0 bottom-0 z-10 w-full h-full"
               />
             </div>
             <div className="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start text-left">

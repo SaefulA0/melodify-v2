@@ -2,10 +2,10 @@ import MusicPlayerComp from "../MusicPlayerComp";
 import React, { useState } from "react";
 import Head from "next/head";
 
-import MenuBarMobile from "./MenuBarMobile";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
-import Footer from "./Footer";
+import MenuBarMobile from "./MenuBarMobileComp";
+import SidebarComp from "./SidebarComp";
+import HeaderComp from "./HeaderComp";
+import FooterComp from "./FooterComp";
 
 export default function LayoutComp({ pageTitle, children }) {
   // Concatenate page title (if exists) to site title
@@ -22,13 +22,13 @@ export default function LayoutComp({ pageTitle, children }) {
         <title>{titleConcat}</title>
       </Head>
       <div className="bg-[#F6F6F6] overflow-hidden">
-        <Header />
+        <HeaderComp />
         <div className="flex relative">
           <MenuBarMobile setter={setShowSidebar} />
-          <Sidebar show={showSidebar} setter={setShowSidebar} />
+          <SidebarComp show={showSidebar} setter={setShowSidebar} />
           <main className="w-full h-screen overflow-y-scroll scrollbar-hide">
             {children}
-            <Footer />
+            <FooterComp />
           </main>
         </div>
         <div>

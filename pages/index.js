@@ -37,12 +37,10 @@ export default function homePage() {
   return (
     <LayoutComp pageTitle="Home">
       <div className="min-h-screen max-w-full px-6 pt-16 md:pt-11 md:flex shadow-sm rounded-l-3xl mb-16">
-        {/* flex kiri */}
+        {/* flex left */}
         <div className="md:basis-full md:mr-10">
-          {/* home */}
           <h1 className="text-4xl text-gray-800 font-bold mb-4">Beranda</h1>
           <div className="shadow-md rounded-md">
-            {/* tranding saat ini */}
             <div className="flex justify-start items-center gap-5 w-full h-32 md:h-52 p-4 md:p-10 rounded-t-md bg-gradient-to-b from-zinc-800 via-zinc-950 to-zinc-800">
               <div className="w-32 md:w-40 flex justify-center items-center">
                 {topGlobalTrack?.images?.[0]?.url ? (
@@ -104,9 +102,8 @@ export default function homePage() {
             </div>
           </div>
         </div>
-        {/* flex kanan */}
+        {/* flex right */}
         <div className="md:basis-1/2">
-          {/* Top Track */}
           <div className="w-full mt-12 px-5 py-6 text-gray-800 bg-white p-4 rounded-md shadow-md">
             <h2 className="text-lg font-bold mb-2">
               Musik Yang Sering Kamu Putar
@@ -135,7 +132,6 @@ export default function homePage() {
               </>
             )}
           </div>
-          {/* card playlist */}
           <div className="mt-12">
             <div className="w-full flex justify-between items-center mb-4">
               <h2 className="text-lg text-gray-800 font-bold">

@@ -18,7 +18,6 @@ export default function useSpotify() {
       }
 
       spotifyAPI.setAccessToken(session.user.accessToken);
-      // console.log("TOKEN YANG DIPAKE REQ", session.user.accessToken);
     }
   }, [session]);
 
