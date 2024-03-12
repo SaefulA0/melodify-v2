@@ -1,7 +1,7 @@
 import React from "react";
 import { getProviders, getSession, signIn } from "next-auth/react";
 import Head from "next/head";
-import Footer from "../components/Layout/Footer";
+import Footer from "../components/Layout/FooterComp";
 
 export default function landingPage({ providers }) {
   return (

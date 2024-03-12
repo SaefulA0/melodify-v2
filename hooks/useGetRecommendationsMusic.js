@@ -21,24 +21,28 @@ export default function useGetRecommendationsMusic({
             options.max_energy = 1.0;
             options.min_valence = 0.5;
             options.max_valence = 1.0;
+            options.market = "ID";
             break;
           case "sad":
             options.min_energy = 0.0;
             options.max_energy = 0.5;
             options.min_valence = 0.0;
             options.max_valence = 0.5;
+            options.market = "ID";
             break;
           case "neutral":
             options.min_energy = 0.0;
             options.max_energy = 0.5;
             options.min_valence = 0.5;
             options.max_valence = 1.0;
+            options.market = "ID";
             break;
           case "angry":
             options.min_energy = 0.5;
             options.max_energy = 1.0;
             options.min_valence = 0.0;
             options.max_valence = 0.5;
+            options.market = "ID";
             break;
           default:
             break;

@@ -79,13 +79,23 @@ export default function getRecommendationsPage() {
   const handleDetectFacialExpression = () => {
     setInterval(async () => {
       if (canvasRef.current && videoRef.current) {
+        // Mulai mengukur waktu eksekusi
+        const start = performance.now();
+
         const detections = await faceapi
           .detectSingleFace(
             videoRef.current,
             new faceapi.TinyFaceDetectorOptions()
           )
           .withFaceExpressions();
+
         if (detections !== null && detections !== undefined) {
+          // Selesai mengukur waktu eksekusi
+          const end = performance.now();
+          const executionTime = end - start;
+          const executionTimeInSecond = executionTime / 1000;
+          console.log(`Waktu eksekusi: ${executionTimeInSecond} detik`);
+
           setMood(detections);
 
           canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
