@@ -132,7 +132,7 @@ export default function ModalAddTrack({ idsong, playlist, spotifyAPI }) {
                           >
                             {({ active, chacked }) => (
                               <div className="flex justify-start items-center text-left w-full p-2 rounded-md ">
-                                {playlist.images[0] ? (
+                                {playlist.images?.[0] ? (
                                   <img
                                     src={playlist.images?.[0]?.url}
                                     className="rounded-md aspect-square object-cover w-16 mb-1 mr-3"

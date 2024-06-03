@@ -7,7 +7,7 @@ export default function PlaylistComp({ playlist }) {
   return (
     <div onClick={() => router.push(`/playlistPage/${playlist.id}`)}>
       <div className="w-36 md:w-44 h-56 md:h-60 shadow-lg p-2 rounded-md border cursor-pointer transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 bg-white hover:bg-gray-200 duration-300 hover:z-20">
-        {playlist.images[0] ? (
+        {playlist.images?.[0] ? (
           <img
             className="rounded-md aspect-square object-cover w-full mb-1"
             src={playlist.images?.[0]?.url}
