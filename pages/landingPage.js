@@ -21,7 +21,7 @@ export default function landingPage({ providers }) {
                       className="w-24 md:w-32 rounded-md shadow-md"
                       width={500}
                       height={500}
-                      src="https://i.ibb.co/3MhHYZ9/Logotype.png"
+                      src="https://i.ibb.co.com/1dkbT6P/Logotype.png"
                       alt="logoType"
                     />
                   </div>
@@ -53,7 +53,7 @@ export default function landingPage({ providers }) {
                 <img
                   className="hidden md:inline object-cover object-center rounded"
                   alt="Hero"
-                  src="https://i.ibb.co/2S99vKG/Landing-Page-BG.jpg"
+                  src="https://i.ibb.co.com/SBVF9vm/Landing-Page-BG.jpg"
                 />
               </div>
             </div>
